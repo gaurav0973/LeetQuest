@@ -12,7 +12,7 @@ app.use(cookieParser());
 
 
 app.get("/" , (req , res)=>{
-    res.send("Hello Guys welcome to leetlab🔥");
+    res.send("Hello developers welcome to leetQuest🔥");
 })
 
 

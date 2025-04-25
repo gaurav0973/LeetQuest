@@ -8,6 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//enums 
 enum UserRole {
   ADMIN
   USER
@@ -15,10 +16,10 @@ enum UserRole {
 
 model User {
   id        String   @id @default(uuid())
-  name      String?
+  name      String?  
   email     String   @unique
-  image     String?
-  role      UserRole @default(USER)
+  image     String? 
+  role UserRole   @default(USER) 
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
