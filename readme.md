@@ -1,6 +1,6 @@
-# LeetLab
+# LeetQuest
 
-LeetLab is a LeetCode-inspired platform crafted to assist developers in practicing coding challenges across multiple programming languages, including JavaScript, Python, and Java.
+LeetQuest is a LeetCode-inspired platform crafted to assist developers in practicing coding challenges across multiple programming languages, including JavaScript, Python, and Java.
 
 # Current Status
 - **Database**: Dockerized with PostgreSQL using Prisma ORM.
