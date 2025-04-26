@@ -51,7 +51,7 @@ export const register = asyncHandler(async (req, res) => {
     console.error("Registration Error:", error);
     return res
       .status(500)
-      .json(new ApiResponse(500, `Registration failed: ${error.message}`));
+      .json(new ApiError(500, `Registration failed: ${error.message}`));
   }
 });
 
@@ -93,7 +93,7 @@ export const login = asyncHandler(async (req, res) => {
     console.error("Error Logging In user:", error);
     return res
       .status(500)
-      .json(new ApiResponse(500, "Error logging in user"));
+      .json(new ApiError(500, "Error logging in user"));
   }
 });
 
@@ -118,11 +118,29 @@ export const logout = asyncHandler(async (req, res) => {
     console.error("Error Logging Out user:", error);
     return res
       .status(500)
-      .json(new ApiResponse(500, "Error logging out user"));
+      .json(new ApiError(500, "Error logging out user"));
   }
 });
 
 
 export const check = asyncHandler(async (req, res) => {
-  res.send("Used is currentlly logged in")
+  if (!req.user) {
+    return res
+      .status(401)
+      .json(new ApiResponse(401, "User is not authenticated"));
+  }
+
+  try {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "User authenticated successfully", req.user))
+  } 
+  catch (error) {
+    console.error("Error checking user:", error);
+    return res
+      .status(500)
+      .json(new ApiError(500, "Error checking user"))
+    
+  }
+
 })
