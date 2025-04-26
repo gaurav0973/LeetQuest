@@ -8,3 +8,10 @@ export const generateJWTToken = (newUser) => {
         {expiresIn : process.env.JWT_EXPIRATION}
     )
 }
+
+export const verifyJWTToken = (token) => {
+    return jwt.verify(
+        token,
+        process.env.JWT_SECRET
+    )
+}

@@ -1,4 +1,4 @@
-function asyncHandler(requestHandler){
+export function asyncHandler(requestHandler){
     return function(req, res, next){
         Promise.resolve(requestHandler(req, res, next))
         .catch(function(err){
@@ -7,4 +7,3 @@ function asyncHandler(requestHandler){
     }
 }
 
-export {asyncHandler}
