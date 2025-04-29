@@ -32,3 +32,23 @@ export const isLoggedIn = async (req , res , next)=>{
         res.status(500).json(new ApiResponse(500, "Error authenticating user"))
     }
 }
+
+
+export const checkAdmin = async (req, res, next) => {
+    const userId = req.user.id
+    try {
+        const user = await db.user.findUnique({where: {id:userId}, select:{role:true}})
+        if(!user || user.role !== "ADMIN"){
+            return res
+                .status(403)
+                .json(new ApiResponse(403, "Access Denied, Admins Only"))
+        }
+        next()  
+    } 
+    catch (error) {
+        console.log("Error Checking Admin role : ", error.message)
+        return res
+            .status(500)
+            .json(new ApiResponse(500, "Error checking admin role"))
+    }
+}

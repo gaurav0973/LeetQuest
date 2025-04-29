@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser"
 import authRoute from "./routes/auth.routes.js"
+import problemRoutes from "./routes/problem.routes.js"
 
 
 dotenv.config()
@@ -18,6 +19,7 @@ app.get("/" , (req , res)=>{
 
 // routes
 app.use("/api/v1/auth" , authRoute);
+app.use("/api/v1/problem", problemRoutes)
 
 app.listen(process.env.PORT, ()=> {
     console.log("Server is running at PORT : ", process.env.PORT)
