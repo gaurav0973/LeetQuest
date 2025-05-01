@@ -3,7 +3,9 @@ import { asyncHandler } from "../utils/async-handler.js";
 
 
 
-export const createProblem = asyncHandler(async (req, res) => {});
+export const createProblem = asyncHandler(async (req, res) => {
+    
+});
 
 export const getAllProblems = asyncHandler(async (req, res) => {});
 
