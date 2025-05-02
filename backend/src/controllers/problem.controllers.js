@@ -82,12 +82,74 @@ export const createProblem = asyncHandler(async (req, res) => {
   }
 });
 
-export const getAllProblems = asyncHandler(async (req, res) => {});
+export const getAllProblems = asyncHandler(async (req, res) => {
+    try {
+        const problems = await db.problem.findMany();
+        if(!problems){
+            return res
+            .status(404)
+            .json(new ApiError(404, "No problems found"));
+        }
 
-export const getProblemById = asyncHandler(async (req, res) => {});
+        return res.status(200).json(new ApiResponse(200, "Problems fetched successfully", problems));
+        
+    } 
+    catch (error) {
+        console.log("Error while fetching all problems", error);
+        return res
+        .status(500)
+        .json(new ApiError(500, "Error while fetching all problems"));
+        
+    }
+
+});
+
+export const getProblemById = asyncHandler(async (req, res) => {
+    const { id } = req.params
+    try {
+
+        const problem = await db.problem.findUnique({where:{id}});
+        if(!problem){
+            return res
+            .status(404)
+            .json(new ApiError(404, "Problem not found"));
+        }
+
+        return res.status(200).json(new ApiResponse(200, "Problem fetched successfully", problem))
+
+    } 
+    catch (error) {
+        console.log("Error while fetching problem by id", error);
+        return res
+        .status(500)
+        .json(new ApiError(500, "Error while fetching problem by id"));
+        
+    }
+});
 
 export const updateProblem = asyncHandler(async (req, res) => {});
 
-export const deleteProblem = asyncHandler(async (req, res) => {});
+export const deleteProblem = asyncHandler(async (req, res) => {
+    const { id } = req.params
+    try {
+
+        const problem = await db.problem.findUnique({where:{id}});
+        if(!problem){
+            return res
+            .status(404)
+            .json(new ApiError(404, "Problem not found"));
+        }
+
+        await db.problem.delete({where:{id}})
+
+        return res.status(200).json(new ApiResponse(200, "Problem deleted successfully"))
+    } 
+    catch (error) {
+        console.log("Error while deleting problem by id", error);
+        return res
+        .status(500)
+        .json(new ApiError(500, "Error while deleting problem by id"));
+    }
+});
 
 export const getAllProblemsSolvedByUser = asyncHandler(async (req, res) => {});
