@@ -127,7 +127,96 @@ export const getProblemById = asyncHandler(async (req, res) => {
     }
 });
 
-export const updateProblem = asyncHandler(async (req, res) => {});
+export const updateProblem = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const {
+        title,
+        description,
+        difficulty,
+        tags,
+        examples,
+        constraints,
+        testcases,
+        codeSnippets,
+        referenceSolutions,
+    } = req.body;
+
+    try {
+        // Check if problem exists
+        const problem = await db.problem.findUnique({ where: { id } });
+        if (!problem) {
+            return res
+                .status(404)
+                .json(new ApiError(404, "Problem not found"));
+        }
+
+        // Check user authorization
+        if (req.user.role !== "ADMIN") {
+            return res
+                .status(403)
+                .json(new ApiError(403, "Only Admins can update problems"));
+        }
+
+        // Validate reference solutions
+        for (const [language, solutionCode] of Object.entries(referenceSolutions)) {
+            const languageId = getJudge0LanguageId(language);
+
+            if (!languageId) {
+                return res
+                    .status(400)
+                    .json(new ApiError(400, "Invalid Language"));
+            }
+
+            const submissions = testcases.map(({ input, output }) => ({
+                source_code: solutionCode,
+                language_id: languageId,
+                stdin: input,
+                expected_output: output,
+            }));
+
+            const submissionResults = await submitBatch(submissions);
+            const tokens = submissionResults.map((res) => res.token);
+            const results = await pollBatchResults(tokens);
+
+            // Verify all test cases pass
+            for (let i = 0; i < results.length; i++) {
+                const result = results[i];
+                if (result.status.id !== 3) {
+                    return res
+                        .status(400)
+                        .json(new ApiError(400, "Invalid Solution"));
+                }
+            }
+        }
+
+        // Update problem
+        const updatedProblem = await db.problem.update({
+            where: { id },
+            data: {
+                title,
+                description,
+                difficulty,
+                tags,
+                examples,
+                constraints,
+                testcases,
+                codeSnippets,
+                referenceSolutions,
+                userId: req.user.id,
+            },
+        });
+
+        return res
+            .status(200)
+            .json(new ApiResponse(200, "Problem updated successfully", updatedProblem));
+
+    } catch (error) {
+        console.log("Error while updating problem:", error);
+        return res
+            .status(500)
+            .json(new ApiError(500, "Error while updating problem"));
+    }
+});
 
 export const deleteProblem = asyncHandler(async (req, res) => {
     const { id } = req.params
@@ -135,8 +224,7 @@ export const deleteProblem = asyncHandler(async (req, res) => {
 
         const problem = await db.problem.findUnique({where:{id}});
         if(!problem){
-            return res
-            .status(404)
+            return res.status(404)
             .json(new ApiError(404, "Problem not found"));
         }
 
