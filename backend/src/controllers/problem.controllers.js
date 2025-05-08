@@ -240,4 +240,40 @@ export const deleteProblem = asyncHandler(async (req, res) => {
     }
 });
 
-export const getAllProblemsSolvedByUser = asyncHandler(async (req, res) => {});
+export const getAllProblemsSolvedByUser = asyncHandler(async (req, res) => {
+    const userId = req.user.id
+    try {
+
+        const problems = await db.problem.findMany({
+            where : {
+                solvedBy : {
+                    some : {
+                        userId
+                    }
+                }
+            },
+            include : {
+                solvedBy : {
+                    where : {
+                        userId : userId
+                    }
+                }
+            }
+        });
+        
+        if(!problems){
+            return res.status(404)
+            .json(new ApiError(404, "No problems found"));
+        }
+        
+        return res.status(200).json(new ApiResponse(200, "Problems fetched successfully", problems));
+        
+    } 
+    catch (error) {
+        console.log("Error while fetching all problems solved by user", error)
+        return res
+        .status(500)
+        .json(new ApiError(500, "Error while fetching all problems solved by user"));
+        
+    }
+});
