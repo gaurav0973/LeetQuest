@@ -5,17 +5,21 @@ import LoginPage from './page/LoginPage'
 import SignUpPage from './page/SignUpPage'
 
 function App() {
+
+  let authUser = null
   return (
     <div className='flex flex-col justify-start items-center'>
       <Routes>
         <Route 
-          path='/' element={<HomePage/>}
+          path='/' 
+          element={authUser ? <HomePage/> : <Navigate to='/login'/>}
+
         />
         <Route 
-          path='/login' elemnet={<LoginPage/>}
+          path='/login' element={!authUser ? <LoginPage/> : <Navigate to='/'/>}
         />
         <Route 
-          path='/signup' element={<SignUpPage/>}
+          path='/signup' element={!authUser ? <SignUpPage/> : <Navigate to='/'/>}
         />
         
       </Routes>
