@@ -5,7 +5,6 @@ import LoginPage from './page/LoginPage'
 import SignUpPage from './page/SignUpPage'
 
 function App() {
-
   let authUser = null
   return (
     <div className='flex flex-col justify-start items-center'>
@@ -16,10 +15,12 @@ function App() {
 
         />
         <Route 
-          path='/login' element={!authUser ? <LoginPage/> : <Navigate to='/'/>}
+          path='/login' 
+          element={!authUser ? <LoginPage/> : <Navigate to='/'/>}
         />
         <Route 
-          path='/signup' element={!authUser ? <SignUpPage/> : <Navigate to='/'/>}
+          path='/signup' 
+          element={!authUser ? <SignUpPage/> : <Navigate to='/'/>}
         />
         
       </Routes>
