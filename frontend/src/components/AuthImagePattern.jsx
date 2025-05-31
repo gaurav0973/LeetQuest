@@ -1,8 +1,6 @@
 import { Code, Terminal, FileCode, Braces } from "lucide-react"
 import { useEffect, useState } from "react"
 
-
-
 const CodeBackground = ({ title, subtitle }) => {
   const [activeIndex, setActiveIndex] = useState(0)
 
@@ -58,7 +56,7 @@ function reverseList(head) {
 }`,
   ]
 
-  // Rotate through code snippets
+  // Rotate through code snippets every 2 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % codeSnippets.length)
@@ -116,7 +114,7 @@ function reverseList(head) {
 
         {/* Logo */}
         <div className="flex items-center justify-center mb-6">
-          <div className="w-12 h-12 rounded-xl bg-primary/10  flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
             <Code className="w-6 h-6 text-primary" />
           </div>
         </div>
