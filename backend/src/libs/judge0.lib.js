@@ -1,11 +1,12 @@
 import axios from "axios"
 
-export const getJudge0LanguageId  = (language) => {
+export const getJudge0LanguageId = (language)=>{
     const languageMap = {
         "PYTHON":71,
         "JAVA":62,
         "JAVASCRIPT":63,
     }
+
     return languageMap[language.toUpperCase()]
 }
 
@@ -37,15 +38,20 @@ export const submitBatch = async (submissions)=>{
         submissions
     })
 
+
+    console.log("Submission Results: ", data)
+
     return data // [{token} , {token} , {token}]
 }
 
 
-export const getLanguageName = (languageId)=>{
-    const languageMap = {
-        71:"PYTHON",
-        62:"JAVA",
-        63:"JAVASCRIPT",
+export function getLanguageName(languageId)
+{
+    const LANGUAGE_NAMES = {
+        74: "TypeScript",
+        63: "JavaScript",
+        71: "Python",
+        62: "Java",
     }
-    return languageMap[languageId]
+    return LANGUAGE_NAMES[languageId] || "Unknown"
 }

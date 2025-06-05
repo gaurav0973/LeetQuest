@@ -1,54 +1,76 @@
+import jwt from "jsonwebtoken";
 import {db} from "../libs/db.js"
-import { ApiResponse } from "../utils/api-response.js";
-import { verifyJWTToken } from "../utils/jwt-token.js";
 
-export const isLoggedIn = async (req , res , next)=>{
+export const authMiddleware = async (req , res , next)=>{
     try {
-        const token = req.cookies.jwt
-        console.log("JWT Token : ", token);
-        
+        const token = req.cookies.jwt;
+
         if(!token){
-            return res.status(400).json(new ApiResponse(400, "Unauthorized - No token provided"))
+            return res.status(401).json({
+                message:"Unauthorized - No token provided"
+            })
         }
 
-        // console.log("Just before Decoded Token")
-        const decoded = verifyJWTToken(token)
-        // console.log("Decoded Token : ", decoded);
-        
-        
+        let decoded;
+
+        try {
+            decoded = jwt.verify(token , process.env.JWT_SECRET);
+        } catch (error) {
+            return res.status(401).json({
+                message:"Unauthorized - Invalid token"
+            })
+        }
+
         const user = await db.user.findUnique({
-            where:{id:decoded.id},
-            select:{id:true, image:true, name:true, email:true, role:true}
-        })
-        if(!user){
-            return res.status(400).json(new ApiResponse(400, "User is not found"))
-        }
-        req.user = user
-        next()
+            where:{
+                id:decoded.id
+            },
+            select:{
+                id:true,
+                image:true,
+                name:true,
+                email:true,
+                role:true
+            }
+        });
 
-    }
-    catch (error) {
-        console.error("Error authenticating user:", error.message)
-        res.status(500).json(new ApiResponse(500, "Error authenticating user"))
+
+        if(!user){
+            return res.status(404).json({message:"User not found"});
+        }
+
+        req.user = user;
+        next();
+
+    } catch (error) {
+        console.error("Error authenticating user:", error);
+        res.status(500).json({message:"Error authenticating user"});
     }
 }
 
 
-export const checkAdmin = async (req, res, next) => {
-    const userId = req.user.id
+export const checkAdmin  = async(req , res , next)=>{
     try {
-        const user = await db.user.findUnique({where: {id:userId}, select:{role:true}})
+        const userId = req.user.id;
+        
+        const user = await db.user.findUnique({
+            where:{
+                id:userId
+            },
+            select:{
+                role:true
+            }
+        })
+
         if(!user || user.role !== "ADMIN"){
-            return res
-                .status(403)
-                .json(new ApiResponse(403, "Access Denied, Admins Only"))
+            return res.status(403).json({
+                message:"Access denied - Admins only"
+            })
         }
-        next()  
-    } 
-    catch (error) {
-        console.log("Error Checking Admin role : ", error.message)
-        return res
-            .status(500)
-            .json(new ApiResponse(500, "Error checking admin role"))
+
+        next();
+    } catch (error) {
+        console.error("Error checking admin role:", error);
+        res.status(500).json({message:"Error checking admin role"});
     }
 }
