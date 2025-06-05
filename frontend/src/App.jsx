@@ -1,19 +1,12 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {Routes, Route, Navigate} from "react-router-dom"
 import HomePage from './page/HomePage'
 import LoginPage from './page/LoginPage'
 import SignUpPage from './page/SignUpPage'
 import { Toaster } from 'react-hot-toast'
-import { useAuthStore } from './store/useAuthStore'
-import { check } from '../../backend/src/controllers/auth.controllers'
 
 function App() {
-    const {authUser, isCheckingAuth, checkAuth} = useAuthStore();
-
-    useEffect(()=>{
-      checkAuth();
-    }, [checkAuth])
-
+   const authUser = null
 
 
   return (
