@@ -6,7 +6,7 @@ CREATE TABLE "Problem" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "difficulty" "Difficulty" NOT NULL DEFAULT 'EASY',
+    "difficulty" "Difficulty" NOT NULL,
     "tags" TEXT[],
     "userId" TEXT NOT NULL,
     "examples" JSONB NOT NULL,
