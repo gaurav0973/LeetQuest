@@ -10,8 +10,6 @@ const LogoutButton = ({children})=>{
         
     }
 
-
-
     return (
         <button className="btn btn-primary" onClick={onLogout}> 
             {children}
