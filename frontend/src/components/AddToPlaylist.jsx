@@ -52,9 +52,9 @@ const AddToPlaylistModal = ({ isOpen, onClose, problemId }) => {
             </select>
           </div>
 
-          <div className="flex justify-end gap-2 mt-6">
+          <div className="flex justify-end gap-2 mt-6 ">
             <button type="button" onClick={onClose} className="btn btn-ghost">
-              Cancel
+              Cancell
             </button>
             <button 
               type="submit" 
