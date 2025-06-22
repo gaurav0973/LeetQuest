@@ -68,7 +68,7 @@ const ProblemsTable = ({ problems }) => {
     setIsAddToPlaylistModalOpen(true);
   };
   return (
-    <div className="w-full max-w-6xl mx-auto">
+    <div className="w-full">
       {/* Header with Create Playlist Button */}
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-4">

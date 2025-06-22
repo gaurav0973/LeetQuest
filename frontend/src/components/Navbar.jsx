@@ -22,10 +22,9 @@ const Navbar = () => {
   const isActive = (path) => {
     return location.pathname === path;
   };
-
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-gray-800 bg-black/80 backdrop-blur-lg">
-      <div className="flex w-full justify-between items-center mx-auto max-w-7xl px-4 py-3">
+      <div className="flex w-full justify-between items-center mx-auto px-4 lg:px-8 xl:px-12 py-3">
         {/* Logo Section */}
         <Link to="/" className="flex items-center gap-2">
           <img

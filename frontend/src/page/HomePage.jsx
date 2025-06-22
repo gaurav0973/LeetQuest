@@ -32,24 +32,21 @@ const HomePage = () => {
 
     return matchesSearch && matchesDifficulty;
   });
-
   return (
-    <div className="min-h-screen flex flex-col items-center py-8 px-4 max-w-7xl mx-auto">
+    <div className="min-h-screen flex flex-col py-6 w-full">
       {/* Subtle background glow */}
       <div className="fixed top-1/4 left-0 w-1/4 h-1/4 bg-white opacity-5 blur-3xl rounded-full"></div>
       <div className="fixed bottom-1/4 right-0 w-1/4 h-1/4 bg-white opacity-5 blur-3xl rounded-full"></div>
-
       {/* Problems Header */}
-      <div className="w-full max-w-6xl mb-8">
+      <div className="w-full mb-6">
         <h1 className="text-2xl font-bold text-white mb-2">Problem Set</h1>
         <p className="text-gray-400">
           Enhance your coding skills by solving algorithmic challenges and
           preparing for technical interviews
         </p>
-      </div>
-
+      </div>{" "}
       {/* Filter & Search Bar */}
-      <div className="w-full max-w-6xl bg-black/50 backdrop-blur-sm border border-gray-800 rounded-lg p-4 mb-6">
+      <div className="w-full bg-black/50 backdrop-blur-sm border border-gray-800 rounded-lg p-4 mb-6">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -98,12 +95,13 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-
       {/* Problems Table */}
       {filteredProblems.length > 0 ? (
-        <ProblemTable problems={filteredProblems} />
+        <div className="w-full">
+          <ProblemTable problems={filteredProblems} />
+        </div>
       ) : (
-        <div className="w-full max-w-6xl flex flex-col items-center justify-center py-16 border border-dashed border-gray-800 rounded-lg">
+        <div className="w-full flex flex-col items-center justify-center py-16 border border-dashed border-gray-800 rounded-lg">
           <div className="text-gray-400 text-center">
             <p className="text-lg font-medium mb-2">No problems found</p>
             <p className="text-sm">

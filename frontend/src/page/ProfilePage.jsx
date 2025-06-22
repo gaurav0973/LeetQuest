@@ -25,35 +25,48 @@ const ProfilePage = () => {
     submissions: [],
     loading: true,
   });
-
   // Get user stats when the component mounts
   useEffect(() => {
     const fetchUserStats = async () => {
       try {
-        // Get solved problems
-        const solvedResponse = await axiosInstance.get(`/problem/solved`);
+        // Get solved problems - use the correct endpoint
+        const solvedResponse = await axiosInstance.get(
+          `/problem/get-solved-problems`
+        );
+        console.log("Solved problems response:", solvedResponse.data);
 
         // Get submissions
         const submissionsResponse = await axiosInstance.get(`/submission/user`);
+        console.log("Submissions response:", submissionsResponse.data);
 
         // Get playlists
         const playlistsResponse = await axiosInstance.get(`/playlist`);
+        console.log("Playlists response:", playlistsResponse.data);
 
-        const acceptedSubmissions = submissionsResponse.data.submissions.filter(
+        const submissions = submissionsResponse.data.submissions || [];
+        const acceptedSubmissions = submissions.filter(
           (sub) => sub.status === "Accepted"
         );
 
         setUserStats({
           solvedProblems: solvedResponse.data.problems || [],
-          totalSubmissions: submissionsResponse.data.submissions.length,
+          totalSubmissions: submissions.length,
           acceptedSubmissions: acceptedSubmissions.length,
           playlists: playlistsResponse.data.playlists || [],
-          submissions: submissionsResponse.data.submissions.slice(0, 5) || [],
+          submissions: submissions.slice(0, 5) || [],
           loading: false,
         });
       } catch (error) {
         console.error("Error fetching user stats:", error);
-        setUserStats((prev) => ({ ...prev, loading: false }));
+        // Set default values in case of errors
+        setUserStats({
+          solvedProblems: [],
+          totalSubmissions: 0,
+          acceptedSubmissions: 0,
+          playlists: [],
+          submissions: [],
+          loading: false,
+        });
       }
     };
 
@@ -75,15 +88,13 @@ const ProfilePage = () => {
       </div>
     );
   }
-
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-10 max-w-6xl mx-auto">
+    <div className="min-h-screen flex flex-col py-6 w-full">
       {/* Background effects */}
       <div className="absolute top-16 left-0 w-1/4 h-1/4 bg-primary opacity-20 blur-3xl rounded-md"></div>
       <div className="absolute bottom-16 right-0 w-1/4 h-1/4 bg-primary opacity-20 blur-3xl rounded-md"></div>
-
       {/* Profile Header */}
-      <div className="w-full max-w-4xl bg-black/50 backdrop-blur-lg border border-gray-800 rounded-xl p-6 mb-6 flex flex-col md:flex-row items-center gap-6 relative z-10">
+      <div className="w-full bg-black/50 backdrop-blur-lg border border-gray-800 rounded-xl p-6 mb-6 flex flex-col md:flex-row items-center gap-6 relative z-10">
         <div className="relative group">
           <img
             src={authUser?.image || "https://avatar.iran.liara.run/public/boy"}
@@ -132,10 +143,9 @@ const ProfilePage = () => {
             <p className="text-xs text-gray-400">Completion</p>
           </div>
         </div>
-      </div>
-
+      </div>{" "}
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-8">
         {/* Solved Problems by Difficulty */}
         <div className="bg-black/50 backdrop-blur-lg border border-gray-800 rounded-xl p-6">
           <h2 className="text-lg font-semibold text-white mb-4 flex items-center">
@@ -280,10 +290,9 @@ const ProfilePage = () => {
             </div>
           )}
         </div>
-      </div>
-
+      </div>{" "}
       {/* Recent Activity */}
-      <div className="w-full max-w-4xl bg-black/50 backdrop-blur-lg border border-gray-800 rounded-xl p-6">
+      <div className="w-full bg-black/50 backdrop-blur-lg border border-gray-800 rounded-xl p-6">
         <h2 className="text-lg font-semibold text-white mb-4 flex items-center">
           <Clock className="w-5 h-5 mr-2 text-primary" />
           Recent Activity
