@@ -11,12 +11,14 @@ import {
   BookOpen,
   CheckCircle2,
   Download,
+  AlertCircle,
 } from "lucide-react";
 import Editor from "@monaco-editor/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
 
 const problemSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters"),
@@ -115,27 +117,29 @@ const sampledpData = {
 * @return {number}
 */
 function climbStairs(n) {
-// Write your code here
+  // Write your code here - JavaScript
+  // Return the number of ways to climb to the top
 }
 
 // Parse input and execute
 const readline = require('readline');
 const rl = readline.createInterface({
-input: process.stdin,
-output: process.stdout,
-terminal: false
+  input: process.stdin,
+  output: process.stdout,
+  terminal: false
 });
 
 rl.on('line', (line) => {
-const n = parseInt(line.trim());
-const result = climbStairs(n);
-
-console.log(result);
-rl.close();
+  const n = parseInt(line.trim());
+  const result = climbStairs(n);
+  
+  console.log(result);
+  rl.close();
 });`,
     PYTHON: `class Solution:
   def climbStairs(self, n: int) -> int:
-      # Write your code here
+      # Write your code here - Python
+      # Return the number of ways to climb to the top
       pass
 
 # Input parsing
@@ -155,7 +159,8 @@ if __name__ == "__main__":
 
 class Main {
   public int climbStairs(int n) {
-      // Write your code here
+      // Write your code here - Java
+      // Return the number of ways to climb to the top
       return 0;
   }
   
@@ -178,34 +183,34 @@ class Main {
 * @return {number}
 */
 function climbStairs(n) {
-// Base cases
-if (n <= 2) {
-  return n;
-}
+  // Base cases
+  if (n <= 2) {
+    return n;
+  }
 
-// Dynamic programming approach
-let dp = new Array(n + 1);
-dp[1] = 1;
-dp[2] = 2;
+  // Dynamic programming approach for JavaScript
+  let dp = new Array(n + 1);
+  dp[1] = 1;
+  dp[2] = 2;
 
-for (let i = 3; i <= n; i++) {
-  dp[i] = dp[i - 1] + dp[i - 2];
-}
+  for (let i = 3; i <= n; i++) {
+    dp[i] = dp[i - 1] + dp[i - 2];
+  }
 
-return dp[n];
+  return dp[n];
 
-/* Alternative approach with O(1) space
-let a = 1; // ways to climb 1 step
-let b = 2; // ways to climb 2 steps
+  /* Alternative approach with O(1) space
+  let a = 1; // ways to climb 1 step
+  let b = 2; // ways to climb 2 steps
 
-for (let i = 3; i <= n; i++) {
-  let temp = a + b;
-  a = b;
-  b = temp;
-}
+  for (let i = 3; i <= n; i++) {
+    let temp = a + b;
+    a = b;
+    b = temp;
+  }
 
-return n === 1 ? a : b;
-*/
+  return n === 1 ? a : b;
+  */
 }
 
 // Parse input and execute
@@ -229,7 +234,7 @@ rl.close();
       if n <= 2:
           return n
       
-      # Dynamic programming approach
+      # Dynamic programming approach for Python
       dp = [0] * (n + 1)
       dp[1] = 1
       dp[2] = 2
@@ -269,7 +274,7 @@ class Main {
           return n;
       }
       
-      // Dynamic programming approach
+      // Dynamic programming approach for Java
       int[] dp = new int[n + 1];
       dp[1] = 1;
       dp[2] = 2;
@@ -359,7 +364,8 @@ const sampleStringProblem = {
    * @return {boolean}
    */
   function isPalindrome(s) {
-    // Write your code here
+    // Write your JavaScript code here
+    // Check if the string is a palindrome
   }
   
   // Add readline for dynamic input handling
@@ -381,7 +387,8 @@ const sampleStringProblem = {
   });`,
     PYTHON: `class Solution:
       def isPalindrome(self, s: str) -> bool:
-          # Write your code here
+          # Write your Python code here
+          # Check if the string is a palindrome
           pass
   
   # Input parsing
@@ -404,7 +411,9 @@ public class Main {
     }
 
     public static boolean isPalindrome(String s) {
-       
+        // Write your Java code here
+        // Check if the string is a palindrome
+        return false; // Replace with your implementation
     }
 
     public static void main(String[] args) {
@@ -423,7 +432,7 @@ public class Main {
    * @return {boolean}
    */
   function isPalindrome(s) {
-    // Convert to lowercase and remove non-alphanumeric characters
+    // Convert to lowercase and remove non-alphanumeric characters (JavaScript approach)
     s = s.toLowerCase().replace(/[^a-z0-9]/g, '');
     
     // Check if it's a palindrome
@@ -460,10 +469,10 @@ public class Main {
   });`,
     PYTHON: `class Solution:
       def isPalindrome(self, s: str) -> bool:
-          # Convert to lowercase and keep only alphanumeric characters
+          # Convert to lowercase and keep only alphanumeric characters (Python approach)
           filtered_chars = [c.lower() for c in s if c.isalnum()]
           
-          # Check if it's a palindrome
+          # Check if it's a palindrome using Python idiom for reversed list
           return filtered_chars == filtered_chars[::-1]
   
   # Input parsing
@@ -486,6 +495,7 @@ public class Main {
     }
 
     public static boolean isPalindrome(String s) {
+        // Java approach to preprocess the string and check if it's a palindrome
         s = preprocess(s);
         int left = 0, right = s.length() - 1;
 
@@ -514,7 +524,9 @@ const CreateProblemForm = () => {
   const [sampleType, setSampleType] = useState("DP");
   const [activeTab, setActiveTab] = useState("basic"); // Added state for active tab
   const [activeLanguage, setActiveLanguage] = useState("JAVASCRIPT"); // For the language sub-tabs
-  const navigation = useNavigate();
+  const navigation = useNavigate(); // Get user from auth store to check if admin
+  const { authUser } = useAuthStore(); // Templates will be loaded from the problem samples
+
   const {
     register,
     control,
@@ -532,14 +544,126 @@ const CreateProblemForm = () => {
         JAVA: { input: "", output: "", explanation: "" },
       },
       codeSnippets: {
-        JAVASCRIPT: "function solution() {\n  // Write your code here\n}",
-        PYTHON: "def solution():\n    # Write your code here\n    pass",
-        JAVA: "public class Solution {\n    public static void main(String[] args) {\n        // Write your code here\n    }\n}",
+        JAVASCRIPT: `/**
+ * @param {any} input
+ * @return {any}
+ */
+function solution(input) {
+  // Write your code here
+  return input;
+}
+
+// Parse input and execute
+const readline = require('readline');
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  terminal: false
+});
+
+rl.on('line', (line) => {
+  const input = line.trim();
+  const result = solution(input);
+  console.log(result);
+  rl.close();
+});`,
+        PYTHON: `class Solution:
+    def solution(self, input_data):
+        # Write your code here
+        return input_data
+
+# Input parsing
+if __name__ == "__main__":
+    import sys
+    
+    # Parse input
+    input_data = sys.stdin.readline().strip()
+    
+    # Solve
+    sol = Solution()
+    result = sol.solution(input_data)
+    
+    # Print result
+    print(result)`,
+        JAVA: `import java.util.Scanner;
+
+public class Main {
+    public static String solution(String input) {
+        // Write your code here
+        return input;
+    }
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine().trim();
+        
+        String result = solution(input);
+        
+        System.out.println(result);
+        scanner.close();
+    }
+}`,
       },
       referenceSolutions: {
-        JAVASCRIPT: "// Add your reference solution here",
-        PYTHON: "# Add your reference solution here",
-        JAVA: "// Add your reference solution here",
+        JAVASCRIPT: `/**
+ * @param {any} input
+ * @return {any}
+ */
+function solution(input) {
+  // Implement your reference solution here
+  return input;
+}
+
+// Parse input and execute
+const readline = require('readline');
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  terminal: false
+});
+
+rl.on('line', (line) => {
+  const input = line.trim();
+  const result = solution(input);
+  console.log(result);
+  rl.close();
+});`,
+        PYTHON: `class Solution:
+    def solution(self, input_data):
+        # Implement your reference solution here
+        return input_data
+
+# Input parsing
+if __name__ == "__main__":
+    import sys
+    
+    # Parse input
+    input_data = sys.stdin.readline().strip()
+    
+    # Solve
+    sol = Solution()
+    result = sol.solution(input_data)
+    
+    # Print result
+    print(result)`,
+        JAVA: `import java.util.Scanner;
+
+public class Main {
+    public static String solution(String input) {
+        // Implement your reference solution here
+        return input;
+    }
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine().trim();
+        
+        String result = solution(input);
+        
+        System.out.println(result);
+        scanner.close();
+    }
+}`,
       },
     },
   });
@@ -563,24 +687,51 @@ const CreateProblemForm = () => {
     control,
     name: "tags",
   });
-
   const [isLoading, setIsLoading] = useState(false);
+
+  // Check if user is admin and show warning if not
+  useEffect(() => {
+    if (authUser && authUser.role !== "ADMIN") {
+      toast.error("Only admin users can create problems", { duration: 5000 });
+    }
+  }, [authUser]);
 
   const onSubmit = async (value) => {
     try {
+      // Check if user is admin
+      if (authUser?.role !== "ADMIN") {
+        toast.error("You must have admin privileges to create problems");
+        return;
+      }
+
       setIsLoading(true);
+      console.log("Submitting form with data:", JSON.stringify(value, null, 2));
+
+      // Make API request
       const res = await axiosInstance.post("/problems/create-problem", value);
-      console.log(res.data);
+      console.log("Response from server:", res.data);
       toast.success(res.data.message || "Problem Created successfully⚡");
       navigation("/");
     } catch (error) {
-      console.log(error);
-      toast.error("Error creating problem");
+      console.log(
+        "Error details:",
+        error.response?.data || error.message || error
+      );
+
+      // Display specific error messages based on server response
+      if (error.response?.data?.error?.includes("failed for language")) {
+        toast.error(
+          "Reference solution test failed. Check your test cases and solutions."
+        );
+      } else if (error.response?.status === 403) {
+        toast.error("Access denied - Admin privileges required");
+      } else {
+        toast.error(error.response?.data?.error || "Error creating problem");
+      }
     } finally {
       setIsLoading(false);
     }
   };
-
   const loadSampleData = () => {
     const sampleData = sampleType === "DP" ? sampledpData : sampleStringProblem;
 
@@ -589,7 +740,14 @@ const CreateProblemForm = () => {
 
     // Reset the form with sample data
     reset(sampleData);
-  };  // Define tabs for the form
+
+    console.log("Sample data loaded:", sampleData);
+
+    // Make sure the current language code snippets are properly loaded
+    toast.success(
+      `${sampleType === "DP" ? "Dynamic Programming" : "String"} problem template loaded!`
+    );
+  }; // Define tabs for the form
   const tabs = [
     {
       id: "basic",
@@ -613,15 +771,27 @@ const CreateProblemForm = () => {
       icon: <Lightbulb className="w-4 h-4" />,
     },
   ];
-
   return (
     <div className="container mx-auto py-8 px-4 max-w-7xl">
       <div className="card bg-base-100 shadow-xl">
         <div className="card-body p-6 md:p-8">
+          {/* Admin check warning */}
+          {authUser && authUser.role !== "ADMIN" && (
+            <div className="alert alert-warning mb-6">
+              <AlertCircle className="w-6 h-6" />
+              <span>
+                Only admin users can create problems. Your role is:{" "}
+                <strong>{authUser.role}</strong>
+              </span>
+            </div>
+          )}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 pb-4 border-b">
             <h2 className="card-title text-2xl md:text-3xl flex items-center gap-3">
               <FileText className="w-6 h-6 md:w-8 md:h-8 text-primary" />
               Create Problem
+              {authUser?.role === "ADMIN" && (
+                <span className="badge badge-success">Admin</span>
+              )}
             </h2>
 
             <div className="flex flex-col md:flex-row gap-3 mt-4 md:mt-0">
@@ -744,7 +914,6 @@ const CreateProblemForm = () => {
                 </div>
               </div>
             )}
-
             {/* Tags Tab Content */}
             {activeTab === "tags" && (
               <div className="card bg-base-200 p-4 md:p-6 shadow-md">
@@ -790,7 +959,6 @@ const CreateProblemForm = () => {
                 )}
               </div>
             )}
-
             {/* Test Cases Tab Content */}
             {activeTab === "testcases" && (
               <div className="card bg-base-200 p-4 md:p-6 shadow-md">
@@ -876,32 +1044,43 @@ const CreateProblemForm = () => {
                   </div>
                 )}
               </div>
-            )}            {/* Languages Tab Content */}
+            )}{" "}
+            {/* Languages Tab Content */}
             {activeTab === "languages" && (
               <div className="card bg-base-200 p-4 md:p-6 shadow-md">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
                   <h3 className="text-lg md:text-xl font-semibold flex items-center gap-2">
                     <Code2 className="w-5 h-5" />
                     Languages
-                  </h3>
-                  
+                  </h3>{" "}
                   {/* Language Selection Tabs */}
                   <div className="tabs tabs-boxed bg-base-100 p-1 mt-4 md:mt-0">
-                    <a 
+                    <a
                       className={`tab tab-sm ${activeLanguage === "JAVASCRIPT" ? "tab-active" : ""}`}
-                      onClick={() => setActiveLanguage("JAVASCRIPT")}
+                      onClick={() => {
+                        setActiveLanguage("JAVASCRIPT");
+                        toast.success("Switched to JavaScript", {
+                          duration: 1500,
+                        });
+                      }}
                     >
                       JavaScript
                     </a>
-                    <a 
+                    <a
                       className={`tab tab-sm ${activeLanguage === "PYTHON" ? "tab-active" : ""}`}
-                      onClick={() => setActiveLanguage("PYTHON")}
+                      onClick={() => {
+                        setActiveLanguage("PYTHON");
+                        toast.success("Switched to Python", { duration: 1500 });
+                      }}
                     >
                       Python
                     </a>
-                    <a 
+                    <a
                       className={`tab tab-sm ${activeLanguage === "JAVA" ? "tab-active" : ""}`}
-                      onClick={() => setActiveLanguage("JAVA")}
+                      onClick={() => {
+                        setActiveLanguage("JAVA");
+                        toast.success("Switched to Java", { duration: 1500 });
+                      }}
                     >
                       Java
                     </a>
@@ -913,7 +1092,12 @@ const CreateProblemForm = () => {
                   <div className="card bg-base-100 shadow-md">
                     <div className="card-body p-4 md:p-6">
                       <h4 className="font-semibold text-base md:text-lg mb-4">
-                        Starter Code Template - {activeLanguage === "JAVASCRIPT" ? "JavaScript" : activeLanguage === "PYTHON" ? "Python" : "Java"}
+                        Starter Code Template -{" "}
+                        {activeLanguage === "JAVASCRIPT"
+                          ? "JavaScript"
+                          : activeLanguage === "PYTHON"
+                            ? "Python"
+                            : "Java"}
                       </h4>
                       <div className="border rounded-md overflow-hidden">
                         <Controller
@@ -953,8 +1137,13 @@ const CreateProblemForm = () => {
                     <div className="card-body p-4 md:p-6">
                       <h4 className="font-semibold text-base md:text-lg mb-4 flex items-center gap-2">
                         <CheckCircle2 className="w-5 h-5 text-success" />
-                        Reference Solution - {activeLanguage === "JAVASCRIPT" ? "JavaScript" : activeLanguage === "PYTHON" ? "Python" : "Java"}
-                      </h4>
+                        Reference Solution -{" "}
+                        {activeLanguage === "JAVASCRIPT"
+                          ? "JavaScript"
+                          : activeLanguage === "PYTHON"
+                            ? "Python"
+                            : "Java"}
+                      </h4>{" "}
                       <div className="border rounded-md overflow-hidden">
                         <Controller
                           name={`referenceSolutions.${activeLanguage}`}
@@ -985,6 +1174,30 @@ const CreateProblemForm = () => {
                           </span>
                         </div>
                       )}
+                      <div className="mt-3">
+                        <div className="alert alert-info text-sm">
+                          <div>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              className="stroke-current shrink-0 w-6 h-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                              ></path>
+                            </svg>
+                            <span>
+                              Reference solutions must correctly solve all test
+                              cases. The backend will validate this before
+                              creating the problem.
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -992,7 +1205,12 @@ const CreateProblemForm = () => {
                   <div className="card bg-base-100 shadow-md">
                     <div className="card-body p-4 md:p-6">
                       <h4 className="font-semibold text-base md:text-lg mb-4">
-                        Example - {activeLanguage === "JAVASCRIPT" ? "JavaScript" : activeLanguage === "PYTHON" ? "Python" : "Java"}
+                        Example -{" "}
+                        {activeLanguage === "JAVASCRIPT"
+                          ? "JavaScript"
+                          : activeLanguage === "PYTHON"
+                            ? "Python"
+                            : "Java"}
                       </h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                         <div className="form-control">
@@ -1041,7 +1259,9 @@ const CreateProblemForm = () => {
                           </label>
                           <textarea
                             className="textarea textarea-bordered min-h-24 w-full p-3 resize-y"
-                            {...register(`examples.${activeLanguage}.explanation`)}
+                            {...register(
+                              `examples.${activeLanguage}.explanation`
+                            )}
                             placeholder="Explain the example"
                           />
                         </div>
@@ -1051,7 +1271,6 @@ const CreateProblemForm = () => {
                 </div>
               </div>
             )}
-
             {/* Additional Information Tab Content */}
             {activeTab === "additional" && (
               <div className="card bg-base-200 p-4 md:p-6 shadow-md">
@@ -1106,7 +1325,6 @@ const CreateProblemForm = () => {
                 </div>
               </div>
             )}
-
             {/* Submit Button - Always Visible */}
             <div className="card-actions justify-end pt-4 border-t">
               <div className="flex flex-wrap gap-2">
@@ -1127,7 +1345,6 @@ const CreateProblemForm = () => {
                     Previous
                   </button>
                 )}
-
                 {activeTab !== "additional" && (
                   <button
                     type="button"
@@ -1144,9 +1361,17 @@ const CreateProblemForm = () => {
                   >
                     Next
                   </button>
-                )}
-
-                <button type="submit" className="btn btn-primary btn-lg gap-2">
+                )}{" "}
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-lg gap-2"
+                  disabled={authUser?.role !== "ADMIN" || isLoading}
+                  title={
+                    authUser?.role !== "ADMIN"
+                      ? "Only admin users can create problems"
+                      : ""
+                  }
+                >
                   {isLoading ? (
                     <span className="loading loading-spinner text-white"></span>
                   ) : (
