@@ -1,67 +1,102 @@
 import { db } from "../libs/db.js";
 
-export const getAllSubmission = async(req , res)=>{
-    try {
-        const userId = req.user.id;
+export const getAllSubmission = async (req, res) => {
+  try {
+    const userId = req.user.id;
 
-        const submissions = await db.submission.findMany({
-            where:{
-                userId:userId
-            }
-        })
+    const submissions = await db.submission.findMany({
+      where: {
+        userId: userId,
+      },
+    });
 
-        res.status(200).json({
-            success:true,
-            message:"Submissions fetched successfully",
-            submissions
-        })
-        
-    } catch (error) {
-        console.error("Fetch Submissions Error:", error);
-        res.status(500).json({ error: "Failed to fetch submissions" });
-    }
-}
+    res.status(200).json({
+      success: true,
+      message: "Submissions fetched successfully",
+      submissions,
+    });
+  } catch (error) {
+    console.error("Fetch Submissions Error:", error);
+    res.status(500).json({ error: "Failed to fetch submissions" });
+  }
+};
 
+export const getUserSubmissions = async (req, res) => {
+  try {
+    const userId = req.user.id;
 
-export const getSubmissionsForProblem = async (req , res)=>{
-    try {
-        const userId = req.user.id;
-        const problemId = req.params.problemId;
-        const submissions = await db.submission.findMany({
-            where:{
-                userId:userId,
-                problemId:problemId
-            }
-        })
+    const submissions = await db.submission.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        problem: {
+          select: {
+            id: true,
+            title: true,
+            difficulty: true,
+          },
+        },
+        testCases: {
+          select: {
+            passed: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
-        res.status(200).json({
-            success:true,
-            message:"Submission fetched successfully",
-            submissions
-        })
-    } catch (error) {
-        console.error("Fetch Submissions Error:", error);
-        res.status(500).json({ error: "Failed to fetch submissions" });
-    }
-}
+    res.status(200).json({
+      success: true,
+      message: "User submissions fetched successfully",
+      submissions,
+    });
+  } catch (error) {
+    console.error("Fetch User Submissions Error:", error);
+    res.status(500).json({ error: "Failed to fetch user submissions" });
+  }
+};
 
+export const getSubmissionsForProblem = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const problemId = req.params.problemId;
+    const submissions = await db.submission.findMany({
+      where: {
+        userId: userId,
+        problemId: problemId,
+      },
+    });
 
-export const getAllTheSubmissionsForProblem = async (req , res)=>{
-    try {
-        const problemId = req.params.problemId;
-        const submission = await db.submission.count({
-            where:{
-                problemId:problemId
-            }
-        })
+    res.status(200).json({
+      success: true,
+      message: "Submission fetched successfully",
+      submissions,
+    });
+  } catch (error) {
+    console.error("Fetch Submissions Error:", error);
+    res.status(500).json({ error: "Failed to fetch submissions" });
+  }
+};
 
-        res.status(200).json({
-            success:true,
-            message:"Submissions Fetched successfully",
-            count:submission
-        })
-    } catch (error) {
-        console.error("Fetch Submissions Error:", error);
-        res.status(500).json({ error: "Failed to fetch submissions" });
-    }
-}
+export const getAllTheSubmissionsForProblem = async (req, res) => {
+  try {
+    const problemId = req.params.problemId;
+    const submission = await db.submission.count({
+      where: {
+        problemId: problemId,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Submissions Fetched successfully",
+      count: submission,
+    });
+  } catch (error) {
+    console.error("Fetch Submissions Error:", error);
+    res.status(500).json({ error: "Failed to fetch submissions" });
+  }
+};

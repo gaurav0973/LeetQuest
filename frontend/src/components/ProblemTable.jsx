@@ -7,7 +7,6 @@ import AddToPlaylistModal from "./AddToPlaylist";
 import CreatePlaylistModal from "./CreatePlaylistModal";
 import { usePlaylistStore } from "../store/usePlaylistStore";
 
-
 const ProblemsTable = ({ problems }) => {
   const { authUser } = useAuthStore();
   const { onDeleteProblem } = useActions();
@@ -17,7 +16,8 @@ const ProblemsTable = ({ problems }) => {
   const [selectedTag, setSelectedTag] = useState("ALL");
   const [currentPage, setCurrentPage] = useState(1);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isAddToPlaylistModalOpen, setIsAddToPlaylistModalOpen] = useState(false);
+  const [isAddToPlaylistModalOpen, setIsAddToPlaylistModalOpen] =
+    useState(false);
   const [selectedProblemId, setSelectedProblemId] = useState(null);
 
   // Extract all unique tags from problems
@@ -67,136 +67,123 @@ const ProblemsTable = ({ problems }) => {
     setSelectedProblemId(problemId);
     setIsAddToPlaylistModalOpen(true);
   };
-
   return (
-    <div className="w-full max-w-6xl mx-auto mt-10">
+    <div className="w-full max-w-6xl mx-auto">
       {/* Header with Create Playlist Button */}
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Problems</h2>
-        <button
-          className="btn btn-primary gap-2"
-          onClick={() => setIsCreateModalOpen(true)}
-        >
-          <Plus className="w-4 h-4" />
-          Create Playlist
-        </button>
-      </div>
-
-      {/* Filters */}
-      <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
-        <input
-          type="text"
-          placeholder="Search by title"
-          className="input input-bordered w-full md:w-1/3 bg-base-200"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <select
-          className="select select-bordered bg-base-200"
-          value={difficulty}
-          onChange={(e) => setDifficulty(e.target.value)}
-        >
-          <option value="ALL">All Difficulties</option>
-          {difficulties.map((diff) => (
-            <option key={diff} value={diff}>
-              {diff.charAt(0).toUpperCase() + diff.slice(1).toLowerCase()}
-            </option>
-          ))}
-        </select>
-        <select
-          className="select select-bordered bg-base-200"
-          value={selectedTag}
-          onChange={(e) => setSelectedTag(e.target.value)}
-        >
-          <option value="ALL">All Tags</option>
-          {allTags.map((tag) => (
-            <option key={tag} value={tag}>
-              {tag}
-            </option>
-          ))}
-        </select>
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex items-center gap-4">
+          <button
+            className="px-4 py-2 bg-white text-black text-sm font-medium rounded-md hover:bg-white/90 transition-colors"
+            onClick={() => setIsCreateModalOpen(true)}
+          >
+            <Plus className="w-4 h-4 inline mr-1.5" />
+            Create Playlist
+          </button>
+        </div>
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-xl shadow-md">
-        <table className="table table-zebra table-lg bg-base-200 text-base-content">
-          <thead className="bg-base-300">
-            <tr>
-              <th>Solved</th>
-              <th>Title</th>
-              <th>Tags</th>
-              <th>Difficulty</th>
-              <th>Actions</th>
+      <div className="overflow-x-auto border border-gray-800 rounded-md">
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="bg-black/30 border-b border-gray-800">
+              <th className="py-3 px-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-16">
+                Status
+              </th>
+              <th className="py-3 px-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                Title
+              </th>
+              <th className="py-3 px-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider hidden md:table-cell">
+                Tags
+              </th>
+              <th className="py-3 px-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-24">
+                Difficulty
+              </th>
+              <th className="py-3 px-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-24">
+                Actions
+              </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-gray-800">
             {paginatedProblems.length > 0 ? (
               paginatedProblems.map((problem) => {
-                const isSolved = problem.solvedBy.some(
-                  (user) => user.userId === authUser?.id
-                );
+                const isSolved =
+                  problem.solvedBy?.some?.(
+                    (user) => user.userId === authUser?.id
+                  ) || false;
+
                 return (
-                  <tr key={problem.id}>
-                    <td>
-                      <input
-                        type="checkbox"
-                        checked={isSolved}
-                        readOnly
-                        className="checkbox checkbox-sm"
-                      />
+                  <tr
+                    key={problem.id}
+                    className="hover:bg-white/5 transition-colors"
+                  >
+                    <td className="py-3 px-4">
+                      <div className="flex items-center justify-center">
+                        <div
+                          className={`w-3 h-3 rounded-full ${
+                            isSolved ? "bg-green-500" : "bg-gray-700"
+                          }`}
+                        ></div>
+                      </div>
                     </td>
-                    <td>
-                      <Link to={`/problem/${problem.id}`} className="font-semibold hover:underline">
+                    <td className="py-3 px-4">
+                      <Link
+                        to={`/problem/${problem.id}`}
+                        className="text-white hover:text-primary transition-colors"
+                      >
                         {problem.title}
                       </Link>
                     </td>
-                    <td>
+                    <td className="py-3 px-4 hidden md:table-cell">
                       <div className="flex flex-wrap gap-1">
-                        {(problem.tags || []).map((tag, idx) => (
+                        {(problem.tags || []).slice(0, 2).map((tag, idx) => (
                           <span
                             key={idx}
-                            className="badge badge-outline badge-warning text-xs font-bold"
+                            className="inline-block px-2 py-0.5 bg-white/5 border border-gray-700 rounded text-xs text-gray-300"
                           >
                             {tag}
                           </span>
                         ))}
+                        {(problem.tags || []).length > 2 && (
+                          <span className="text-xs text-gray-500">
+                            +{problem.tags.length - 2}
+                          </span>
+                        )}
                       </div>
                     </td>
-                    <td>
+                    <td className="py-3 px-4">
                       <span
-                        className={`badge font-semibold text-xs text-white ${
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
                           problem.difficulty === "EASY"
-                            ? "badge-success"
+                            ? "text-green-500 bg-green-900/20"
                             : problem.difficulty === "MEDIUM"
-                            ? "badge-warning"
-                            : "badge-error"
+                              ? "text-yellow-500 bg-yellow-900/20"
+                              : "text-red-500 bg-red-900/20"
                         }`}
                       >
-                        {problem.difficulty}
+                        {problem.difficulty.charAt(0) +
+                          problem.difficulty.slice(1).toLowerCase()}
                       </span>
                     </td>
-                    <td>
-                      <div className="flex flex-col md:flex-row gap-2 items-start md:items-center">
-                        {authUser?.role === "ADMIN" && (
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => handleDelete(problem.id)}
-                              className="btn btn-sm btn-error"
-                            >
-                              <TrashIcon className="w-4 h-4 text-white" />
-                            </button>
-                            <button disabled className="btn btn-sm btn-warning">
-                              <PencilIcon className="w-4 h-4 text-white" />
-                            </button>
-                          </div>
-                        )}
+                    <td className="py-3 px-4">
+                      <div className="flex items-center space-x-2">
                         <button
-                          className="btn btn-sm btn-outline flex gap-2 items-center"
+                          className="p-1.5 rounded-md hover:bg-white/10 transition-colors"
                           onClick={() => handleAddToPlaylist(problem.id)}
+                          title="Add to Playlist"
                         >
-                          <Bookmark className="w-4 h-4" />
-                          <span className="hidden sm:inline">Save to Playlist</span>
+                          <Bookmark className="w-4 h-4 text-gray-400 hover:text-white" />
                         </button>
+
+                        {authUser?.role === "ADMIN" && (
+                          <button
+                            onClick={() => handleDelete(problem.id)}
+                            className="p-1.5 rounded-md hover:bg-white/10 transition-colors"
+                            title="Delete Problem"
+                          >
+                            <TrashIcon className="w-4 h-4 text-gray-400 hover:text-red-500" />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -204,8 +191,8 @@ const ProblemsTable = ({ problems }) => {
               })
             ) : (
               <tr>
-                <td colSpan={5} className="text-center py-6 text-gray-500">
-                  No problems found.
+                <td colSpan={5} className="text-center py-12 text-gray-400">
+                  No problems found matching your criteria.
                 </td>
               </tr>
             )}
@@ -214,24 +201,62 @@ const ProblemsTable = ({ problems }) => {
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-center mt-6 gap-2">
-        <button
-          className="btn btn-sm"
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage((prev) => prev - 1)}
-        >
-          Prev
-        </button>
-        <span className="btn btn-ghost btn-sm">
-          {currentPage} / {totalPages}
-        </span>
-        <button
-          className="btn btn-sm"
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage((prev) => prev + 1)}
-        >
-          Next
-        </button>
+      <div className="flex justify-between items-center mt-4 text-sm text-gray-400">
+        <div>
+          Showing{" "}
+          {Math.min(
+            (currentPage - 1) * itemsPerPage + 1,
+            filteredProblems.length
+          )}
+          - {Math.min(currentPage * itemsPerPage, filteredProblems.length)} of{" "}
+          {filteredProblems.length} problems
+        </div>
+
+        <div className="flex gap-1">
+          <button
+            className={`p-2 rounded ${currentPage === 1 ? "text-gray-600" : "hover:bg-white/10"}`}
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+          >
+            Previous
+          </button>
+
+          {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+            // Show pages around current page
+            let pageNum;
+            if (totalPages <= 5) {
+              pageNum = i + 1;
+            } else if (currentPage <= 3) {
+              pageNum = i + 1;
+            } else if (currentPage >= totalPages - 2) {
+              pageNum = totalPages - 4 + i;
+            } else {
+              pageNum = currentPage - 2 + i;
+            }
+
+            return (
+              <button
+                key={pageNum}
+                className={`w-8 h-8 flex items-center justify-center rounded ${
+                  currentPage === pageNum
+                    ? "bg-white text-black font-medium"
+                    : "hover:bg-white/10"
+                }`}
+                onClick={() => setCurrentPage(pageNum)}
+              >
+                {pageNum}
+              </button>
+            );
+          })}
+
+          <button
+            className={`p-2 rounded ${currentPage === totalPages ? "text-gray-600" : "hover:bg-white/10"}`}
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+          >
+            Next
+          </button>
+        </div>
       </div>
 
       {/* Modals */}
@@ -240,7 +265,7 @@ const ProblemsTable = ({ problems }) => {
         onClose={() => setIsCreateModalOpen(false)}
         onSubmit={handleCreatePlaylist}
       />
-      
+
       <AddToPlaylistModal
         isOpen={isAddToPlaylistModalOpen}
         onClose={() => setIsAddToPlaylistModalOpen(false)}

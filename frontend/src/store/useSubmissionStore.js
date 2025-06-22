@@ -24,6 +24,21 @@ export const useSubmissionStore = create((set) => ({
     }
   },
 
+  getUserSubmissions: async () => {
+    set({ isLoading: true });
+    try {
+      const res = await axiosInstance.get("/submission/user");
+      set({ submissions: res.data.submissions });
+      return res.data.submissions;
+    } catch (error) {
+      console.error("Error fetching user submissions:", error);
+      toast.error("Failed to load submissions");
+      return [];
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
   getSubmissionForProblem: async (problemId) => {
     try {
       const res = await axiosInstance.get(
@@ -31,14 +46,10 @@ export const useSubmissionStore = create((set) => ({
       );
 
       set({ submission: res.data.submissions });
-
-      
-
     } catch (error) {
       console.log("Error getting submissions for problem", error);
 
       toast.error("Error getting submissions for problem");
-      
     } finally {
       set({ isLoading: false });
     }
@@ -48,7 +59,7 @@ export const useSubmissionStore = create((set) => ({
     try {
       const res = await axiosInstance.get(
         `/submission/get-submissions-count/${problemId}`
-      );                
+      );
 
       set({ submissionCount: res.data.count });
     } catch (error) {
