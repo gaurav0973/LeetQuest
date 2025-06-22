@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Link } from "react-router-dom";
 import { Bookmark, PencilIcon, Trash, TrashIcon, Plus } from "lucide-react";
@@ -20,6 +20,11 @@ const ProblemsTable = ({ problems }) => {
     useState(false);
   const [selectedProblemId, setSelectedProblemId] = useState(null);
 
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [difficulty, selectedTag, search]);
+
   // Extract all unique tags from problems
   const allTags = useMemo(() => {
     if (!Array.isArray(problems)) return [];
@@ -27,9 +32,7 @@ const ProblemsTable = ({ problems }) => {
     problems.forEach((p) => p.tags?.forEach((t) => tagsSet.add(t)));
     return Array.from(tagsSet);
   }, [problems]);
-
-  // Define allowed difficulties
-  const difficulties = ["EASY", "MEDIUM", "HARD"];
+  // Define allowed difficulties - used in the UI buttons
 
   // Filter problems based on search, difficulty, and tags
   const filteredProblems = useMemo(() => {
@@ -69,16 +72,134 @@ const ProblemsTable = ({ problems }) => {
   };
   return (
     <div className="w-full">
-      {/* Header with Create Playlist Button */}
-      <div className="flex justify-between items-center mb-4">
-        <div className="flex items-center gap-4">
+      {/* Navigation Tabs */}
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-2">
           <button
-            className="px-4 py-2 bg-white text-black text-sm font-medium rounded-md hover:bg-white/90 transition-colors"
+            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
+              difficulty === "ALL"
+                ? "bg-white text-black"
+                : "bg-white/10 text-white hover:bg-white/20"
+            }`}
+            onClick={() => setDifficulty("ALL")}
+          >
+            All Problems
+          </button>
+          <button
+            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
+              difficulty === "EASY"
+                ? "bg-green-500 text-black"
+                : "bg-green-900/20 text-green-500 hover:bg-green-900/30"
+            }`}
+            onClick={() => setDifficulty("EASY")}
+          >
+            Easy
+          </button>
+          <button
+            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
+              difficulty === "MEDIUM"
+                ? "bg-yellow-500 text-black"
+                : "bg-yellow-900/20 text-yellow-500 hover:bg-yellow-900/30"
+            }`}
+            onClick={() => setDifficulty("MEDIUM")}
+          >
+            Medium
+          </button>
+          <button
+            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
+              difficulty === "HARD"
+                ? "bg-red-500 text-black"
+                : "bg-red-900/20 text-red-500 hover:bg-red-900/30"
+            }`}
+            onClick={() => setDifficulty("HARD")}
+          >
+            Hard
+          </button>{" "}
+          <button
+            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
+              selectedTag === "ALL"
+                ? "bg-indigo-500 text-white"
+                : "bg-indigo-900/20 text-indigo-400 hover:bg-indigo-900/30"
+            }`}
+            onClick={() => setSelectedTag("ALL")}
+          >
+            All Tags
+          </button>
+          {allTags.length > 0 &&
+            allTags.slice(0, 3).map((tag) => (
+              <button
+                key={tag}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
+                  selectedTag === tag
+                    ? "bg-blue-500 text-white"
+                    : "bg-black/40 text-gray-300 hover:bg-black/60"
+                }`}
+                onClick={() => setSelectedTag(tag)}
+              >
+                {tag}
+              </button>
+            ))}
+          {allTags.length > 3 && (
+            <div className="relative group">
+              <button className="px-4 py-2 bg-black/40 text-gray-300 hover:bg-black/60 text-sm font-medium rounded-md transition-colors whitespace-nowrap">
+                More Tags
+              </button>
+              <div className="absolute left-0 mt-2 w-48 p-2 bg-black border border-gray-700 rounded-md shadow-lg hidden group-hover:block z-10">
+                <div className="grid grid-cols-2 gap-2">
+                  {allTags.slice(3).map((tag) => (
+                    <button
+                      key={tag}
+                      className={`px-2 py-1 text-xs font-medium rounded transition-colors text-left ${
+                        selectedTag === tag
+                          ? "bg-blue-500 text-white"
+                          : "text-gray-300 hover:bg-white/5"
+                      }`}
+                      onClick={() => setSelectedTag(tag)}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            className="px-4 py-2 bg-white text-black text-sm font-medium rounded-md hover:bg-white/90 transition-colors whitespace-nowrap"
             onClick={() => setIsCreateModalOpen(true)}
           >
             <Plus className="w-4 h-4 inline mr-1.5" />
             Create Playlist
           </button>
+        </div>
+      </div>
+
+      {/* Search Bar */}
+      <div className="relative mb-5">
+        <input
+          type="text"
+          className="w-full pl-10 pr-3 py-2 text-sm text-white bg-black/40 border border-gray-700 rounded-md focus:ring-1 focus:ring-white focus:outline-none"
+          placeholder="Search problems by title..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
         </div>
       </div>
 
