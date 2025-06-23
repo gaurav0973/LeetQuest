@@ -11,14 +11,12 @@ import {
   BookOpen,
   CheckCircle2,
   Download,
-  AlertCircle,
 } from "lucide-react";
 import Editor from "@monaco-editor/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../store/useAuthStore";
 
 const problemSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters"),
@@ -117,29 +115,27 @@ const sampledpData = {
 * @return {number}
 */
 function climbStairs(n) {
-  // Write your code here - JavaScript
-  // Return the number of ways to climb to the top
+// Write your code here
 }
 
 // Parse input and execute
 const readline = require('readline');
 const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-  terminal: false
+input: process.stdin,
+output: process.stdout,
+terminal: false
 });
 
 rl.on('line', (line) => {
-  const n = parseInt(line.trim());
-  const result = climbStairs(n);
-  
-  console.log(result);
-  rl.close();
+const n = parseInt(line.trim());
+const result = climbStairs(n);
+
+console.log(result);
+rl.close();
 });`,
     PYTHON: `class Solution:
   def climbStairs(self, n: int) -> int:
-      # Write your code here - Python
-      # Return the number of ways to climb to the top
+      # Write your code here
       pass
 
 # Input parsing
@@ -159,8 +155,7 @@ if __name__ == "__main__":
 
 class Main {
   public int climbStairs(int n) {
-      // Write your code here - Java
-      // Return the number of ways to climb to the top
+      // Write your code here
       return 0;
   }
   
@@ -183,34 +178,34 @@ class Main {
 * @return {number}
 */
 function climbStairs(n) {
-  // Base cases
-  if (n <= 2) {
-    return n;
-  }
+// Base cases
+if (n <= 2) {
+  return n;
+}
 
-  // Dynamic programming approach for JavaScript
-  let dp = new Array(n + 1);
-  dp[1] = 1;
-  dp[2] = 2;
+// Dynamic programming approach
+let dp = new Array(n + 1);
+dp[1] = 1;
+dp[2] = 2;
 
-  for (let i = 3; i <= n; i++) {
-    dp[i] = dp[i - 1] + dp[i - 2];
-  }
+for (let i = 3; i <= n; i++) {
+  dp[i] = dp[i - 1] + dp[i - 2];
+}
 
-  return dp[n];
+return dp[n];
 
-  /* Alternative approach with O(1) space
-  let a = 1; // ways to climb 1 step
-  let b = 2; // ways to climb 2 steps
+/* Alternative approach with O(1) space
+let a = 1; // ways to climb 1 step
+let b = 2; // ways to climb 2 steps
 
-  for (let i = 3; i <= n; i++) {
-    let temp = a + b;
-    a = b;
-    b = temp;
-  }
+for (let i = 3; i <= n; i++) {
+  let temp = a + b;
+  a = b;
+  b = temp;
+}
 
-  return n === 1 ? a : b;
-  */
+return n === 1 ? a : b;
+*/
 }
 
 // Parse input and execute
@@ -234,7 +229,7 @@ rl.close();
       if n <= 2:
           return n
       
-      # Dynamic programming approach for Python
+      # Dynamic programming approach
       dp = [0] * (n + 1)
       dp[1] = 1
       dp[2] = 2
@@ -274,7 +269,7 @@ class Main {
           return n;
       }
       
-      // Dynamic programming approach for Java
+      // Dynamic programming approach
       int[] dp = new int[n + 1];
       dp[1] = 1;
       dp[2] = 2;
@@ -364,8 +359,7 @@ const sampleStringProblem = {
    * @return {boolean}
    */
   function isPalindrome(s) {
-    // Write your JavaScript code here
-    // Check if the string is a palindrome
+    // Write your code here
   }
   
   // Add readline for dynamic input handling
@@ -387,8 +381,7 @@ const sampleStringProblem = {
   });`,
     PYTHON: `class Solution:
       def isPalindrome(self, s: str) -> bool:
-          # Write your Python code here
-          # Check if the string is a palindrome
+          # Write your code here
           pass
   
   # Input parsing
@@ -411,9 +404,7 @@ public class Main {
     }
 
     public static boolean isPalindrome(String s) {
-        // Write your Java code here
-        // Check if the string is a palindrome
-        return false; // Replace with your implementation
+       
     }
 
     public static void main(String[] args) {
@@ -432,7 +423,7 @@ public class Main {
    * @return {boolean}
    */
   function isPalindrome(s) {
-    // Convert to lowercase and remove non-alphanumeric characters (JavaScript approach)
+    // Convert to lowercase and remove non-alphanumeric characters
     s = s.toLowerCase().replace(/[^a-z0-9]/g, '');
     
     // Check if it's a palindrome
@@ -469,10 +460,10 @@ public class Main {
   });`,
     PYTHON: `class Solution:
       def isPalindrome(self, s: str) -> bool:
-          # Convert to lowercase and keep only alphanumeric characters (Python approach)
+          # Convert to lowercase and keep only alphanumeric characters
           filtered_chars = [c.lower() for c in s if c.isalnum()]
           
-          # Check if it's a palindrome using Python idiom for reversed list
+          # Check if it's a palindrome
           return filtered_chars == filtered_chars[::-1]
   
   # Input parsing
@@ -495,7 +486,6 @@ public class Main {
     }
 
     public static boolean isPalindrome(String s) {
-        // Java approach to preprocess the string and check if it's a palindrome
         s = preprocess(s);
         int left = 0, right = s.length() - 1;
 
@@ -522,11 +512,8 @@ public class Main {
 
 const CreateProblemForm = () => {
   const [sampleType, setSampleType] = useState("DP");
-  const [activeTab, setActiveTab] = useState("basic"); // Added state for active tab
-  const [activeLanguage, setActiveLanguage] = useState("JAVASCRIPT"); // For the language sub-tabs
-  const navigation = useNavigate(); // Get user from auth store to check if admin
-  const { authUser } = useAuthStore(); // Templates will be loaded from the problem samples
-
+  const [activeSection, setActiveSection] = useState("basic"); // Track active section
+  const navigation = useNavigate();
   const {
     register,
     control,
@@ -544,126 +531,14 @@ const CreateProblemForm = () => {
         JAVA: { input: "", output: "", explanation: "" },
       },
       codeSnippets: {
-        JAVASCRIPT: `/**
- * @param {any} input
- * @return {any}
- */
-function solution(input) {
-  // Write your code here
-  return input;
-}
-
-// Parse input and execute
-const readline = require('readline');
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-  terminal: false
-});
-
-rl.on('line', (line) => {
-  const input = line.trim();
-  const result = solution(input);
-  console.log(result);
-  rl.close();
-});`,
-        PYTHON: `class Solution:
-    def solution(self, input_data):
-        # Write your code here
-        return input_data
-
-# Input parsing
-if __name__ == "__main__":
-    import sys
-    
-    # Parse input
-    input_data = sys.stdin.readline().strip()
-    
-    # Solve
-    sol = Solution()
-    result = sol.solution(input_data)
-    
-    # Print result
-    print(result)`,
-        JAVA: `import java.util.Scanner;
-
-public class Main {
-    public static String solution(String input) {
-        // Write your code here
-        return input;
-    }
-    
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine().trim();
-        
-        String result = solution(input);
-        
-        System.out.println(result);
-        scanner.close();
-    }
-}`,
+        JAVASCRIPT: "function solution() {\n  // Write your code here\n}",
+        PYTHON: "def solution():\n    # Write your code here\n    pass",
+        JAVA: "public class Solution {\n    public static void main(String[] args) {\n        // Write your code here\n    }\n}",
       },
       referenceSolutions: {
-        JAVASCRIPT: `/**
- * @param {any} input
- * @return {any}
- */
-function solution(input) {
-  // Implement your reference solution here
-  return input;
-}
-
-// Parse input and execute
-const readline = require('readline');
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-  terminal: false
-});
-
-rl.on('line', (line) => {
-  const input = line.trim();
-  const result = solution(input);
-  console.log(result);
-  rl.close();
-});`,
-        PYTHON: `class Solution:
-    def solution(self, input_data):
-        # Implement your reference solution here
-        return input_data
-
-# Input parsing
-if __name__ == "__main__":
-    import sys
-    
-    # Parse input
-    input_data = sys.stdin.readline().strip()
-    
-    # Solve
-    sol = Solution()
-    result = sol.solution(input_data)
-    
-    # Print result
-    print(result)`,
-        JAVA: `import java.util.Scanner;
-
-public class Main {
-    public static String solution(String input) {
-        // Implement your reference solution here
-        return input;
-    }
-    
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine().trim();
-        
-        String result = solution(input);
-        
-        System.out.println(result);
-        scanner.close();
-    }
-}`,
+        JAVASCRIPT: "// Add your reference solution here",
+        PYTHON: "# Add your reference solution here",
+        JAVA: "// Add your reference solution here",
       },
     },
   });
@@ -687,51 +562,24 @@ public class Main {
     control,
     name: "tags",
   });
-  const [isLoading, setIsLoading] = useState(false);
 
-  // Check if user is admin and show warning if not
-  useEffect(() => {
-    if (authUser && authUser.role !== "ADMIN") {
-      toast.error("Only admin users can create problems", { duration: 5000 });
-    }
-  }, [authUser]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (value) => {
     try {
-      // Check if user is admin
-      if (authUser?.role !== "ADMIN") {
-        toast.error("You must have admin privileges to create problems");
-        return;
-      }
-
       setIsLoading(true);
-      console.log("Submitting form with data:", JSON.stringify(value, null, 2));
-
-      // Make API request
       const res = await axiosInstance.post("/problems/create-problem", value);
-      console.log("Response from server:", res.data);
+      console.log(res.data);
       toast.success(res.data.message || "Problem Created successfully⚡");
       navigation("/");
     } catch (error) {
-      console.log(
-        "Error details:",
-        error.response?.data || error.message || error
-      );
-
-      // Display specific error messages based on server response
-      if (error.response?.data?.error?.includes("failed for language")) {
-        toast.error(
-          "Reference solution test failed. Check your test cases and solutions."
-        );
-      } else if (error.response?.status === 403) {
-        toast.error("Access denied - Admin privileges required");
-      } else {
-        toast.error(error.response?.data?.error || "Error creating problem");
-      }
+      console.log(error);
+      toast.error("Error creating problem");
     } finally {
       setIsLoading(false);
     }
   };
+
   const loadSampleData = () => {
     const sampleData = sampleType === "DP" ? sampledpData : sampleStringProblem;
 
@@ -740,69 +588,459 @@ public class Main {
 
     // Reset the form with sample data
     reset(sampleData);
-
-    console.log("Sample data loaded:", sampleData);
-
-    // Make sure the current language code snippets are properly loaded
-    toast.success(
-      `${sampleType === "DP" ? "Dynamic Programming" : "String"} problem template loaded!`
-    );
-  }; // Define tabs for the form
-  const tabs = [
-    {
-      id: "basic",
-      label: "Basic Info",
-      icon: <FileText className="w-4 h-4" />,
-    },
-    { id: "tags", label: "Tags", icon: <BookOpen className="w-4 h-4" /> },
-    {
-      id: "testcases",
-      label: "Test Cases",
-      icon: <CheckCircle2 className="w-4 h-4" />,
-    },
-    {
-      id: "languages",
-      label: "Languages",
-      icon: <Code2 className="w-4 h-4" />,
-    },
-    {
-      id: "additional",
-      label: "Additional Info",
-      icon: <Lightbulb className="w-4 h-4" />,
-    },
+  };
+  // Define the sections
+  const sections = [
+    { id: "basic", label: "Basic Info", icon: <FileText /> },
+    { id: "tags", label: "Tags", icon: <BookOpen /> },
+    { id: "testcases", label: "Test Cases", icon: <CheckCircle2 /> },
+    { id: "javascript", label: "JavaScript", icon: <Code2 /> },
+    { id: "python", label: "Python", icon: <Code2 /> },
+    { id: "java", label: "Java", icon: <Code2 /> },
+    { id: "additional", label: "Additional Info", icon: <Lightbulb /> },
   ];
-  return (
-    <div className="container mx-auto py-8 px-4 max-w-7xl">
-      <div className="card bg-base-100 shadow-xl">
-        <div className="card-body p-6 md:p-8">
-          {/* Admin check warning */}
-          {authUser && authUser.role !== "ADMIN" && (
-            <div className="alert alert-warning mb-6">
-              <AlertCircle className="w-6 h-6" />
-              <span>
-                Only admin users can create problems. Your role is:{" "}
-                <strong>{authUser.role}</strong>
-              </span>
-            </div>
-          )}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 pb-4 border-b">
-            <h2 className="card-title text-2xl md:text-3xl flex items-center gap-3">
-              <FileText className="w-6 h-6 md:w-8 md:h-8 text-primary" />
-              Create Problem
-              {authUser?.role === "ADMIN" && (
-                <span className="badge badge-success">Admin</span>
-              )}
-            </h2>
 
-            <div className="flex flex-col md:flex-row gap-3 mt-4 md:mt-0">
+  // Render form section based on active section
+  const renderFormSection = () => {
+    switch (activeSection) {
+      case "basic":
+        return (
+          <div className="card bg-base-100 shadow-xl w-full">
+            <div className="card-body p-6 md:p-8">
+              <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                <FileText className="w-6 h-6 text-primary" />
+                Basic Information
+              </h3>
+              <div className="grid grid-cols-1 gap-6">
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text text-base md:text-lg font-semibold">
+                      Title
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    className="input input-bordered w-full text-base md:text-lg"
+                    {...register("title")}
+                    placeholder="Enter problem title"
+                  />
+                  {errors.title && (
+                    <label className="label">
+                      <span className="label-text-alt text-error">
+                        {errors.title.message}
+                      </span>
+                    </label>
+                  )}
+                </div>
+
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text text-base md:text-lg font-semibold">
+                      Description
+                    </span>
+                  </label>
+                  <textarea
+                    className="textarea textarea-bordered min-h-32 w-full text-base md:text-lg p-4 resize-y"
+                    {...register("description")}
+                    placeholder="Enter problem description"
+                  />
+                  {errors.description && (
+                    <label className="label">
+                      <span className="label-text-alt text-error">
+                        {errors.description.message}
+                      </span>
+                    </label>
+                  )}
+                </div>
+
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text text-base md:text-lg font-semibold">
+                      Difficulty
+                    </span>
+                  </label>
+                  <select
+                    className="select select-bordered w-full text-base md:text-lg"
+                    {...register("difficulty")}
+                  >
+                    <option value="EASY">Easy</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="HARD">Hard</option>
+                  </select>
+                  {errors.difficulty && (
+                    <label className="label">
+                      <span className="label-text-alt text-error">
+                        {errors.difficulty.message}
+                      </span>
+                    </label>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case "tags":
+        return (
+          <div className="card bg-base-100 shadow-xl w-full">
+            <div className="card-body p-6 md:p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold flex items-center gap-2">
+                  <BookOpen className="w-6 h-6 text-primary" />
+                  Tags
+                </h3>
+                <button
+                  type="button"
+                  className="btn btn-primary btn-md"
+                  onClick={() => appendTag("")}
+                >
+                  <Plus className="w-4 h-4 mr-1" /> Add Tag
+                </button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {tagFields.map((field, index) => (
+                  <div key={field.id} className="flex gap-2 items-center">
+                    <input
+                      type="text"
+                      className="input input-bordered flex-1"
+                      {...register(`tags.${index}`)}
+                      placeholder="Enter tag"
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-ghost btn-square btn-md"
+                      onClick={() => removeTag(index)}
+                      disabled={tagFields.length === 1}
+                    >
+                      <Trash2 className="w-5 h-5 text-error" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+              {errors.tags && (
+                <div className="mt-4">
+                  <span className="text-error text-sm">
+                    {errors.tags.message}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+
+      case "testcases":
+        return (
+          <div className="card bg-base-100 shadow-xl w-full">
+            <div className="card-body p-6 md:p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold flex items-center gap-2">
+                  <CheckCircle2 className="w-6 h-6 text-primary" />
+                  Test Cases
+                </h3>
+                <button
+                  type="button"
+                  className="btn btn-primary btn-md"
+                  onClick={() => appendTestCase({ input: "", output: "" })}
+                >
+                  <Plus className="w-4 h-4 mr-1" /> Add Test Case
+                </button>
+              </div>
+              <div className="space-y-8">
+                {testCaseFields.map((field, index) => (
+                  <div key={field.id} className="card bg-base-200 shadow-md">
+                    <div className="card-body p-5">
+                      <div className="flex justify-between items-center mb-4">
+                        <h4 className="text-lg font-semibold">
+                          Test Case #{index + 1}
+                        </h4>
+                        <button
+                          type="button"
+                          className="btn btn-ghost btn-md text-error"
+                          onClick={() => removeTestCase(index)}
+                          disabled={testCaseFields.length === 1}
+                        >
+                          <Trash2 className="w-5 h-5 mr-1" /> Remove
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="form-control">
+                          <label className="label">
+                            <span className="label-text font-medium">
+                              Input
+                            </span>
+                          </label>
+                          <textarea
+                            className="textarea textarea-bordered min-h-32 w-full p-3 resize-y"
+                            {...register(`testcases.${index}.input`)}
+                            placeholder="Enter test case input"
+                          />
+                          {errors.testcases?.[index]?.input && (
+                            <label className="label">
+                              <span className="label-text-alt text-error">
+                                {errors.testcases[index].input.message}
+                              </span>
+                            </label>
+                          )}
+                        </div>
+                        <div className="form-control">
+                          <label className="label">
+                            <span className="label-text font-medium">
+                              Expected Output
+                            </span>
+                          </label>
+                          <textarea
+                            className="textarea textarea-bordered min-h-32 w-full p-3 resize-y"
+                            {...register(`testcases.${index}.output`)}
+                            placeholder="Enter expected output"
+                          />
+                          {errors.testcases?.[index]?.output && (
+                            <label className="label">
+                              <span className="label-text-alt text-error">
+                                {errors.testcases[index].output.message}
+                              </span>
+                            </label>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {errors.testcases && !Array.isArray(errors.testcases) && (
+                <div className="mt-4">
+                  <span className="text-error text-sm">
+                    {errors.testcases.message}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      case "javascript":
+      case "python":
+      case "java": {
+        const language = activeSection.toUpperCase();
+        return (
+          <div className="card bg-base-100 shadow-xl w-full">
+            <div className="card-body p-6 md:p-8">
+              <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                <Code2 className="w-6 h-6 text-primary" />
+                {language} Implementation
+              </h3>
+
+              <div className="space-y-8">
+                {/* Starter Code */}
+                <div>
+                  <h4 className="font-semibold text-lg mb-4">
+                    Starter Code Template
+                  </h4>
+                  <div className="border rounded-md overflow-hidden">
+                    <Controller
+                      name={`codeSnippets.${language}`}
+                      control={control}
+                      render={({ field }) => (
+                        <Editor
+                          height="400px"
+                          language={language.toLowerCase()}
+                          theme="vs-dark"
+                          value={field.value}
+                          onChange={field.onChange}
+                          options={{
+                            minimap: { enabled: false },
+                            fontSize: 14,
+                            lineNumbers: "on",
+                            roundedSelection: false,
+                            scrollBeyondLastLine: false,
+                            automaticLayout: true,
+                          }}
+                        />
+                      )}
+                    />
+                  </div>
+                  {errors.codeSnippets?.[language] && (
+                    <div className="mt-2">
+                      <span className="text-error text-sm">
+                        {errors.codeSnippets[language].message}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Reference Solution */}
+                <div>
+                  <h4 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-success" />
+                    Reference Solution
+                  </h4>
+                  <div className="border rounded-md overflow-hidden">
+                    <Controller
+                      name={`referenceSolutions.${language}`}
+                      control={control}
+                      render={({ field }) => (
+                        <Editor
+                          height="400px"
+                          language={language.toLowerCase()}
+                          theme="vs-dark"
+                          value={field.value}
+                          onChange={field.onChange}
+                          options={{
+                            minimap: { enabled: false },
+                            fontSize: 14,
+                            lineNumbers: "on",
+                            roundedSelection: false,
+                            scrollBeyondLastLine: false,
+                            automaticLayout: true,
+                          }}
+                        />
+                      )}
+                    />
+                  </div>
+                  {errors.referenceSolutions?.[language] && (
+                    <div className="mt-2">
+                      <span className="text-error text-sm">
+                        {errors.referenceSolutions[language].message}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Examples */}
+                <div>
+                  <h4 className="font-semibold text-lg mb-4">Example</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="form-control">
+                      <label className="label">
+                        <span className="label-text font-medium">Input</span>
+                      </label>
+                      <textarea
+                        className="textarea textarea-bordered min-h-24 w-full p-3 resize-y"
+                        {...register(`examples.${language}.input`)}
+                        placeholder="Example input"
+                      />
+                      {errors.examples?.[language]?.input && (
+                        <label className="label">
+                          <span className="label-text-alt text-error">
+                            {errors.examples[language].input.message}
+                          </span>
+                        </label>
+                      )}
+                    </div>
+                    <div className="form-control">
+                      <label className="label">
+                        <span className="label-text font-medium">Output</span>
+                      </label>
+                      <textarea
+                        className="textarea textarea-bordered min-h-24 w-full p-3 resize-y"
+                        {...register(`examples.${language}.output`)}
+                        placeholder="Example output"
+                      />
+                      {errors.examples?.[language]?.output && (
+                        <label className="label">
+                          <span className="label-text-alt text-error">
+                            {errors.examples[language].output.message}
+                          </span>
+                        </label>
+                      )}
+                    </div>
+                    <div className="form-control md:col-span-2">
+                      <label className="label">
+                        <span className="label-text font-medium">
+                          Explanation
+                        </span>
+                      </label>
+                      <textarea
+                        className="textarea textarea-bordered min-h-32 w-full p-3 resize-y"
+                        {...register(`examples.${language}.explanation`)}
+                        placeholder="Explain the example"
+                      />
+                    </div>{" "}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      case "additional":
+        return (
+          <div className="card bg-base-100 shadow-xl w-full">
+            <div className="card-body p-6 md:p-8">
+              <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                <Lightbulb className="w-6 h-6 text-warning" />
+                Additional Information
+              </h3>
+              <div className="space-y-8">
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium">Constraints</span>
+                  </label>
+                  <textarea
+                    className="textarea textarea-bordered min-h-32 w-full p-3 resize-y"
+                    {...register("constraints")}
+                    placeholder="Enter problem constraints"
+                  />
+                  {errors.constraints && (
+                    <label className="label">
+                      <span className="label-text-alt text-error">
+                        {errors.constraints.message}
+                      </span>
+                    </label>
+                  )}
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium">
+                      Hints (Optional)
+                    </span>
+                  </label>
+                  <textarea
+                    className="textarea textarea-bordered min-h-32 w-full p-3 resize-y"
+                    {...register("hints")}
+                    placeholder="Enter hints for solving the problem"
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium">
+                      Editorial (Optional)
+                    </span>
+                  </label>
+                  <textarea
+                    className="textarea textarea-bordered min-h-40 w-full p-3 resize-y"
+                    {...register("editorial")}
+                    placeholder="Enter problem editorial/solution explanation"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-base-200">
+      <form onSubmit={handleSubmit(onSubmit)} className="py-8">
+        {/* Header with sample loaders */}
+        <header className="container mx-auto px-4 mb-6">
+          <div className="bg-base-100 p-4 md:p-6 rounded-xl shadow flex flex-col md:flex-row justify-between items-center gap-4">
+            <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-3">
+              <FileText className="w-8 h-8 text-primary" />
+              Create Problem
+            </h1>
+
+            <div className="flex flex-wrap items-center gap-3">
               <div className="join">
-                {" "}
                 <button
                   type="button"
                   className={`btn join-item ${
                     sampleType === "DP" ? "btn-active" : ""
                   }`}
-                  onClick={() => setSampleType("DP")}
+                  onClick={() => setSampleType("array")}
                 >
                   DP Problem
                 </button>
@@ -824,568 +1062,83 @@ public class Main {
                 <Download className="w-4 h-4" />
                 Load Sample
               </button>
+
+              <button type="submit" className="btn btn-primary gap-2">
+                {isLoading ? (
+                  <span className="loading loading-spinner text-white"></span>
+                ) : (
+                  <>
+                    <CheckCircle2 className="w-5 h-5" />
+                    Create Problem
+                  </>
+                )}
+              </button>
             </div>
           </div>
-          {/* Horizontal tabs for form sections */}
-          <div className="tabs tabs-boxed bg-base-200 p-1 mb-6 overflow-x-auto scrollbar-hide flex whitespace-nowrap">
-            {tabs.map((tab) => (
-              <a
-                key={tab.id}
-                className={`tab tab-sm md:tab-md gap-2 ${activeTab === tab.id ? "tab-active" : ""}`}
-                onClick={() => setActiveTab(tab.id)}
-              >
-                {tab.icon}
-                {tab.label}
-              </a>
-            ))}
-          </div>{" "}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-            {/* Basic Information Tab Content */}
-            {activeTab === "basic" && (
-              <div className="card bg-base-200 p-4 md:p-6 shadow-md">
-                <h3 className="text-lg md:text-xl font-semibold mb-6 flex items-center gap-2">
-                  <FileText className="w-5 h-5" />
-                  Basic Information
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="form-control md:col-span-2">
-                    <label className="label">
-                      <span className="label-text text-base md:text-lg font-semibold">
-                        Title
-                      </span>
-                    </label>
-                    <input
-                      type="text"
-                      className="input input-bordered w-full text-base md:text-lg"
-                      {...register("title")}
-                      placeholder="Enter problem title"
-                    />
-                    {errors.title && (
-                      <label className="label">
-                        <span className="label-text-alt text-error">
-                          {errors.title.message}
-                        </span>
-                      </label>
-                    )}
-                  </div>
+        </header>
 
-                  <div className="form-control md:col-span-2">
-                    <label className="label">
-                      <span className="label-text text-base md:text-lg font-semibold">
-                        Description
-                      </span>
-                    </label>
-                    <textarea
-                      className="textarea textarea-bordered min-h-32 w-full text-base md:text-lg p-4 resize-y"
-                      {...register("description")}
-                      placeholder="Enter problem description"
-                    />
-                    {errors.description && (
-                      <label className="label">
-                        <span className="label-text-alt text-error">
-                          {errors.description.message}
-                        </span>
-                      </label>
-                    )}
-                  </div>
-
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text text-base md:text-lg font-semibold">
-                        Difficulty
-                      </span>
-                    </label>
-                    <select
-                      className="select select-bordered w-full text-base md:text-lg"
-                      {...register("difficulty")}
-                    >
-                      <option value="EASY">Easy</option>
-                      <option value="MEDIUM">Medium</option>
-                      <option value="HARD">Hard</option>
-                    </select>
-                    {errors.difficulty && (
-                      <label className="label">
-                        <span className="label-text-alt text-error">
-                          {errors.difficulty.message}
-                        </span>
-                      </label>
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
-            {/* Tags Tab Content */}
-            {activeTab === "tags" && (
-              <div className="card bg-base-200 p-4 md:p-6 shadow-md">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg md:text-xl font-semibold flex items-center gap-2">
-                    <BookOpen className="w-5 h-5" />
-                    Tags
-                  </h3>
-                  <button
-                    type="button"
-                    className="btn btn-primary btn-sm"
-                    onClick={() => appendTag("")}
-                  >
-                    <Plus className="w-4 h-4 mr-1" /> Add Tag
-                  </button>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {tagFields.map((field, index) => (
-                    <div key={field.id} className="flex gap-2 items-center">
-                      <input
-                        type="text"
-                        className="input input-bordered flex-1"
-                        {...register(`tags.${index}`)}
-                        placeholder="Enter tag"
-                      />
-                      <button
-                        type="button"
-                        className="btn btn-ghost btn-square btn-sm"
-                        onClick={() => removeTag(index)}
-                        disabled={tagFields.length === 1}
-                      >
-                        <Trash2 className="w-4 h-4 text-error" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-                {errors.tags && (
-                  <div className="mt-2">
-                    <span className="text-error text-sm">
-                      {errors.tags.message}
-                    </span>
-                  </div>
-                )}
-              </div>
-            )}
-            {/* Test Cases Tab Content */}
-            {activeTab === "testcases" && (
-              <div className="card bg-base-200 p-4 md:p-6 shadow-md">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg md:text-xl font-semibold flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5" />
-                    Test Cases
-                  </h3>
-                  <button
-                    type="button"
-                    className="btn btn-primary btn-sm"
-                    onClick={() => appendTestCase({ input: "", output: "" })}
-                  >
-                    <Plus className="w-4 h-4 mr-1" /> Add Test Case
-                  </button>
-                </div>
-                <div className="space-y-6">
-                  {testCaseFields.map((field, index) => (
-                    <div key={field.id} className="card bg-base-100 shadow-md">
-                      <div className="card-body p-4 md:p-6">
-                        <div className="flex justify-between items-center mb-4">
-                          <h4 className="text-base md:text-lg font-semibold">
-                            Test Case #{index + 1}
-                          </h4>
-                          <button
-                            type="button"
-                            className="btn btn-ghost btn-sm text-error"
-                            onClick={() => removeTestCase(index)}
-                            disabled={testCaseFields.length === 1}
-                          >
-                            <Trash2 className="w-4 h-4 mr-1" /> Remove
-                          </button>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                          <div className="form-control">
-                            <label className="label">
-                              <span className="label-text font-medium">
-                                Input
-                              </span>
-                            </label>
-                            <textarea
-                              className="textarea textarea-bordered min-h-24 w-full p-3 resize-y"
-                              {...register(`testcases.${index}.input`)}
-                              placeholder="Enter test case input"
-                            />
-                            {errors.testcases?.[index]?.input && (
-                              <label className="label">
-                                <span className="label-text-alt text-error">
-                                  {errors.testcases[index].input.message}
-                                </span>
-                              </label>
-                            )}
-                          </div>
-                          <div className="form-control">
-                            <label className="label">
-                              <span className="label-text font-medium">
-                                Expected Output
-                              </span>
-                            </label>
-                            <textarea
-                              className="textarea textarea-bordered min-h-24 w-full p-3 resize-y"
-                              {...register(`testcases.${index}.output`)}
-                              placeholder="Enter expected output"
-                            />
-                            {errors.testcases?.[index]?.output && (
-                              <label className="label">
-                                <span className="label-text-alt text-error">
-                                  {errors.testcases[index].output.message}
-                                </span>
-                              </label>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                {errors.testcases && !Array.isArray(errors.testcases) && (
-                  <div className="mt-2">
-                    <span className="text-error text-sm">
-                      {errors.testcases.message}
-                    </span>
-                  </div>
-                )}
-              </div>
-            )}{" "}
-            {/* Languages Tab Content */}
-            {activeTab === "languages" && (
-              <div className="card bg-base-200 p-4 md:p-6 shadow-md">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-                  <h3 className="text-lg md:text-xl font-semibold flex items-center gap-2">
-                    <Code2 className="w-5 h-5" />
-                    Languages
-                  </h3>{" "}
-                  {/* Language Selection Tabs */}
-                  <div className="tabs tabs-boxed bg-base-100 p-1 mt-4 md:mt-0">
-                    <a
-                      className={`tab tab-sm ${activeLanguage === "JAVASCRIPT" ? "tab-active" : ""}`}
-                      onClick={() => {
-                        setActiveLanguage("JAVASCRIPT");
-                        toast.success("Switched to JavaScript", {
-                          duration: 1500,
-                        });
-                      }}
-                    >
-                      JavaScript
-                    </a>
-                    <a
-                      className={`tab tab-sm ${activeLanguage === "PYTHON" ? "tab-active" : ""}`}
-                      onClick={() => {
-                        setActiveLanguage("PYTHON");
-                        toast.success("Switched to Python", { duration: 1500 });
-                      }}
-                    >
-                      Python
-                    </a>
-                    <a
-                      className={`tab tab-sm ${activeLanguage === "JAVA" ? "tab-active" : ""}`}
-                      onClick={() => {
-                        setActiveLanguage("JAVA");
-                        toast.success("Switched to Java", { duration: 1500 });
-                      }}
-                    >
-                      Java
-                    </a>
-                  </div>
-                </div>
-
-                <div className="space-y-6">
-                  {/* Starter Code */}
-                  <div className="card bg-base-100 shadow-md">
-                    <div className="card-body p-4 md:p-6">
-                      <h4 className="font-semibold text-base md:text-lg mb-4">
-                        Starter Code Template -{" "}
-                        {activeLanguage === "JAVASCRIPT"
-                          ? "JavaScript"
-                          : activeLanguage === "PYTHON"
-                            ? "Python"
-                            : "Java"}
-                      </h4>
-                      <div className="border rounded-md overflow-hidden">
-                        <Controller
-                          name={`codeSnippets.${activeLanguage}`}
-                          control={control}
-                          render={({ field }) => (
-                            <Editor
-                              height="300px"
-                              language={activeLanguage.toLowerCase()}
-                              theme="vs-dark"
-                              value={field.value}
-                              onChange={field.onChange}
-                              options={{
-                                minimap: { enabled: false },
-                                fontSize: 14,
-                                lineNumbers: "on",
-                                roundedSelection: false,
-                                scrollBeyondLastLine: false,
-                                automaticLayout: true,
-                              }}
-                            />
-                          )}
-                        />
-                      </div>
-                      {errors.codeSnippets?.[activeLanguage] && (
-                        <div className="mt-2">
-                          <span className="text-error text-sm">
-                            {errors.codeSnippets[activeLanguage].message}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Reference Solution */}
-                  <div className="card bg-base-100 shadow-md">
-                    <div className="card-body p-4 md:p-6">
-                      <h4 className="font-semibold text-base md:text-lg mb-4 flex items-center gap-2">
-                        <CheckCircle2 className="w-5 h-5 text-success" />
-                        Reference Solution -{" "}
-                        {activeLanguage === "JAVASCRIPT"
-                          ? "JavaScript"
-                          : activeLanguage === "PYTHON"
-                            ? "Python"
-                            : "Java"}
-                      </h4>{" "}
-                      <div className="border rounded-md overflow-hidden">
-                        <Controller
-                          name={`referenceSolutions.${activeLanguage}`}
-                          control={control}
-                          render={({ field }) => (
-                            <Editor
-                              height="300px"
-                              language={activeLanguage.toLowerCase()}
-                              theme="vs-dark"
-                              value={field.value}
-                              onChange={field.onChange}
-                              options={{
-                                minimap: { enabled: false },
-                                fontSize: 14,
-                                lineNumbers: "on",
-                                roundedSelection: false,
-                                scrollBeyondLastLine: false,
-                                automaticLayout: true,
-                              }}
-                            />
-                          )}
-                        />
-                      </div>
-                      {errors.referenceSolutions?.[activeLanguage] && (
-                        <div className="mt-2">
-                          <span className="text-error text-sm">
-                            {errors.referenceSolutions[activeLanguage].message}
-                          </span>
-                        </div>
-                      )}
-                      <div className="mt-3">
-                        <div className="alert alert-info text-sm">
-                          <div>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              className="stroke-current shrink-0 w-6 h-6"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              ></path>
-                            </svg>
-                            <span>
-                              Reference solutions must correctly solve all test
-                              cases. The backend will validate this before
-                              creating the problem.
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Examples */}
-                  <div className="card bg-base-100 shadow-md">
-                    <div className="card-body p-4 md:p-6">
-                      <h4 className="font-semibold text-base md:text-lg mb-4">
-                        Example -{" "}
-                        {activeLanguage === "JAVASCRIPT"
-                          ? "JavaScript"
-                          : activeLanguage === "PYTHON"
-                            ? "Python"
-                            : "Java"}
-                      </h4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                        <div className="form-control">
-                          <label className="label">
-                            <span className="label-text font-medium">
-                              Input
-                            </span>
-                          </label>
-                          <textarea
-                            className="textarea textarea-bordered min-h-20 w-full p-3 resize-y"
-                            {...register(`examples.${activeLanguage}.input`)}
-                            placeholder="Example input"
-                          />
-                          {errors.examples?.[activeLanguage]?.input && (
-                            <label className="label">
-                              <span className="label-text-alt text-error">
-                                {errors.examples[activeLanguage].input.message}
-                              </span>
-                            </label>
-                          )}
-                        </div>
-                        <div className="form-control">
-                          <label className="label">
-                            <span className="label-text font-medium">
-                              Output
-                            </span>
-                          </label>
-                          <textarea
-                            className="textarea textarea-bordered min-h-20 w-full p-3 resize-y"
-                            {...register(`examples.${activeLanguage}.output`)}
-                            placeholder="Example output"
-                          />
-                          {errors.examples?.[activeLanguage]?.output && (
-                            <label className="label">
-                              <span className="label-text-alt text-error">
-                                {errors.examples[activeLanguage].output.message}
-                              </span>
-                            </label>
-                          )}
-                        </div>
-                        <div className="form-control md:col-span-2">
-                          <label className="label">
-                            <span className="label-text font-medium">
-                              Explanation
-                            </span>
-                          </label>
-                          <textarea
-                            className="textarea textarea-bordered min-h-24 w-full p-3 resize-y"
-                            {...register(
-                              `examples.${activeLanguage}.explanation`
-                            )}
-                            placeholder="Explain the example"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-            {/* Additional Information Tab Content */}
-            {activeTab === "additional" && (
-              <div className="card bg-base-200 p-4 md:p-6 shadow-md">
-                <h3 className="text-lg md:text-xl font-semibold mb-6 flex items-center gap-2">
-                  <Lightbulb className="w-5 h-5 text-warning" />
-                  Additional Information
-                </h3>
-                <div className="space-y-6">
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text font-medium">
-                        Constraints
-                      </span>
-                    </label>
-                    <textarea
-                      className="textarea textarea-bordered min-h-24 w-full p-3 resize-y"
-                      {...register("constraints")}
-                      placeholder="Enter problem constraints"
-                    />
-                    {errors.constraints && (
-                      <label className="label">
-                        <span className="label-text-alt text-error">
-                          {errors.constraints.message}
-                        </span>
-                      </label>
-                    )}
-                  </div>
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text font-medium">
-                        Hints (Optional)
-                      </span>
-                    </label>
-                    <textarea
-                      className="textarea textarea-bordered min-h-24 w-full p-3 resize-y"
-                      {...register("hints")}
-                      placeholder="Enter hints for solving the problem"
-                    />
-                  </div>
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text font-medium">
-                        Editorial (Optional)
-                      </span>
-                    </label>
-                    <textarea
-                      className="textarea textarea-bordered min-h-32 w-full p-3 resize-y"
-                      {...register("editorial")}
-                      placeholder="Enter problem editorial/solution explanation"
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-            {/* Submit Button - Always Visible */}
-            <div className="card-actions justify-end pt-4 border-t">
-              <div className="flex flex-wrap gap-2">
-                {activeTab !== "basic" && (
-                  <button
-                    type="button"
-                    className="btn btn-outline gap-2"
-                    onClick={() => {
-                      // Find current tab index and go to previous tab
-                      const currentIndex = tabs.findIndex(
-                        (t) => t.id === activeTab
-                      );
-                      if (currentIndex > 0) {
-                        setActiveTab(tabs[currentIndex - 1].id);
-                      }
-                    }}
-                  >
-                    Previous
-                  </button>
-                )}
-                {activeTab !== "additional" && (
-                  <button
-                    type="button"
-                    className="btn btn-outline btn-primary gap-2"
-                    onClick={() => {
-                      // Find current tab index and go to next tab
-                      const currentIndex = tabs.findIndex(
-                        (t) => t.id === activeTab
-                      );
-                      if (currentIndex < tabs.length - 1) {
-                        setActiveTab(tabs[currentIndex + 1].id);
-                      }
-                    }}
-                  >
-                    Next
-                  </button>
-                )}{" "}
+        <div className="container mx-auto px-4">
+          {/* Section Navigation */}
+          <div className="bg-base-100 p-4 mb-6 rounded-xl shadow overflow-x-auto">
+            <div className="flex space-x-2 md:space-x-4">
+              {sections.map((section) => (
                 <button
-                  type="submit"
-                  className="btn btn-primary btn-lg gap-2"
-                  disabled={authUser?.role !== "ADMIN" || isLoading}
-                  title={
-                    authUser?.role !== "ADMIN"
-                      ? "Only admin users can create problems"
-                      : ""
-                  }
+                  key={section.id}
+                  type="button"
+                  className={`btn ${
+                    activeSection === section.id ? "btn-primary" : "btn-ghost"
+                  } flex-nowrap whitespace-nowrap`}
+                  onClick={() => setActiveSection(section.id)}
                 >
-                  {isLoading ? (
-                    <span className="loading loading-spinner text-white"></span>
-                  ) : (
-                    <>
-                      <CheckCircle2 className="w-5 h-5" />
-                      Create Problem
-                    </>
-                  )}
+                  <span className="mr-2">{section.icon}</span>
+                  {section.label}
                 </button>
-              </div>
+              ))}
             </div>
-          </form>
+          </div>
+
+          {/* Current Section Content */}
+          {renderFormSection()}
+
+          {/* Navigation Controls */}
+          <div className="flex justify-between mt-8">
+            <button
+              type="button"
+              className="btn btn-outline"
+              onClick={() => {
+                const currentIndex = sections.findIndex(
+                  (s) => s.id === activeSection
+                );
+                if (currentIndex > 0) {
+                  setActiveSection(sections[currentIndex - 1].id);
+                }
+              }}
+              disabled={sections.findIndex((s) => s.id === activeSection) === 0}
+            >
+              ← Previous
+            </button>
+
+            <button
+              type="button"
+              className="btn btn-outline"
+              onClick={() => {
+                const currentIndex = sections.findIndex(
+                  (s) => s.id === activeSection
+                );
+                if (currentIndex < sections.length - 1) {
+                  setActiveSection(sections[currentIndex + 1].id);
+                }
+              }}
+              disabled={
+                sections.findIndex((s) => s.id === activeSection) ===
+                sections.length - 1
+              }
+            >
+              Next →
+            </button>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
