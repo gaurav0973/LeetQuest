@@ -1021,34 +1021,51 @@ const CreateProblemForm = () => {
         return null;
     }
   };
+  // Custom style variables for the color palette
+  const customColors = {
+    background: "#1b1b1b",
+    accent: "#e9204f",
+    text: "#f3f3f3"
+  };
 
   return (
-    <div className="min-h-screen bg-base-200">
-      <form onSubmit={handleSubmit(onSubmit)} className="py-8">
+    <div className="min-h-screen w-full" style={{ backgroundColor: customColors.background, color: customColors.text }}>
+      <form onSubmit={handleSubmit(onSubmit)} className="py-6 h-full">
         {/* Header with sample loaders */}
-        <header className="container mx-auto px-4 mb-6">
-          <div className="bg-base-100 p-4 md:p-6 rounded-xl shadow flex flex-col md:flex-row justify-between items-center gap-4">
+        <header className="w-full px-4 mb-6">
+          <div className="p-4 md:p-6 rounded-lg flex flex-col md:flex-row justify-between items-center gap-4" 
+               style={{ backgroundColor: "#242424", borderBottom: `2px solid ${customColors.accent}` }}>
             <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-3">
-              <FileText className="w-8 h-8 text-primary" />
-              Create Problem
+              <FileText className="w-8 h-8" style={{ color: customColors.accent }} />
+              <span style={{ color: customColors.text }}>Create Problem</span>
             </h1>
 
             <div className="flex flex-wrap items-center gap-3">
               <div className="join">
                 <button
                   type="button"
-                  className={`btn join-item ${
-                    sampleType === "DP" ? "btn-active" : ""
-                  }`}
+                  className="px-4 py-2 font-medium"
+                  style={{ 
+                    backgroundColor: sampleType === "DP" ? customColors.accent : "#242424",
+                    color: sampleType === "DP" ? "#fff" : customColors.text,
+                    border: `1px solid ${customColors.accent}`,
+                    borderTopLeftRadius: "0.5rem",
+                    borderBottomLeftRadius: "0.5rem"
+                  }}
                   onClick={() => setSampleType("array")}
                 >
                   DP Problem
                 </button>
                 <button
                   type="button"
-                  className={`btn join-item ${
-                    sampleType === "string" ? "btn-active" : ""
-                  }`}
+                  className="px-4 py-2 font-medium"
+                  style={{ 
+                    backgroundColor: sampleType === "string" ? customColors.accent : "#242424",
+                    color: sampleType === "string" ? "#fff" : customColors.text,
+                    border: `1px solid ${customColors.accent}`,
+                    borderTopRightRadius: "0.5rem",
+                    borderBottomRightRadius: "0.5rem"
+                  }}
                   onClick={() => setSampleType("string")}
                 >
                   String Problem
@@ -1056,14 +1073,19 @@ const CreateProblemForm = () => {
               </div>
               <button
                 type="button"
-                className="btn btn-secondary gap-2"
+                className="px-4 py-2 font-medium flex items-center gap-2 rounded"
+                style={{ backgroundColor: "#242424", border: `1px solid ${customColors.accent}`, color: customColors.text }}
                 onClick={loadSampleData}
               >
-                <Download className="w-4 h-4" />
+                <Download className="w-4 h-4" style={{ color: customColors.accent }} />
                 Load Sample
               </button>
 
-              <button type="submit" className="btn btn-primary gap-2">
+              <button 
+                type="submit" 
+                className="px-4 py-2 font-medium flex items-center gap-2 rounded"
+                style={{ backgroundColor: customColors.accent, color: "#fff" }}
+              >
                 {isLoading ? (
                   <span className="loading loading-spinner text-white"></span>
                 ) : (
