@@ -513,6 +513,7 @@ public class Main {
 const CreateProblemForm = () => {
   const [sampleType, setSampleType] = useState("DP");
   const [activeSection, setActiveSection] = useState("basic"); // Track active section
+  const [selectedLanguage, setSelectedLanguage] = useState("JAVASCRIPT"); // Selected language for code sections
   const navigation = useNavigate();
   const {
     register,
@@ -594,19 +595,16 @@ const CreateProblemForm = () => {
     { id: "basic", label: "Basic Info", icon: <FileText /> },
     { id: "tags", label: "Tags", icon: <BookOpen /> },
     { id: "testcases", label: "Test Cases", icon: <CheckCircle2 /> },
-    { id: "javascript", label: "JavaScript", icon: <Code2 /> },
-    { id: "python", label: "Python", icon: <Code2 /> },
-    { id: "java", label: "Java", icon: <Code2 /> },
+    { id: "language", label: "Language", icon: <Code2 /> }, // Unified language section
     { id: "additional", label: "Additional Info", icon: <Lightbulb /> },
   ];
 
   // Render form section based on active section
   const renderFormSection = () => {
-    switch (activeSection) {
-      case "basic":
+    switch (activeSection) {      case "basic":
         return (
           <div className="card bg-base-100 shadow-xl w-full">
-            <div className="card-body p-6 md:p-8">
+            <div className="card-body p-6 md:p-8 w-full">
               <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
                 <FileText className="w-6 h-6 text-primary" />
                 Basic Information
@@ -815,33 +813,104 @@ const CreateProblemForm = () => {
               )}
             </div>
           </div>
-        );
-      case "javascript":
-      case "python":
-      case "java": {
-        const language = activeSection.toUpperCase();
+        );      case "language": {
         return (
-          <div className="card bg-base-100 shadow-xl w-full">
-            <div className="card-body p-6 md:p-8">
-              <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                <Code2 className="w-6 h-6 text-primary" />
-                {language} Implementation
+          <div
+            className="w-full"
+            style={{
+              backgroundColor: "#1b1b1b",
+              color: "#f3f3f3",
+              minHeight: "calc(100vh - 250px)",
+              width: "100vw",
+              maxWidth: "100%",
+              marginLeft: "calc(-1 * var(--container-padding, 1.5rem))",
+              marginRight: "calc(-1 * var(--container-padding, 1.5rem))",
+            }}
+          >
+            <div className="p-6 md:p-8 w-full">
+              <h3
+                className="text-xl font-bold mb-6 flex items-center gap-2"
+                style={{ color: "#f3f3f3" }}
+              >
+                <Code2 className="w-6 h-6" style={{ color: "#e9204f" }} />
+                Language Implementation
               </h3>
 
-              <div className="space-y-8">
+              {/* Language Tabs */}              <div
+                className="mb-8 overflow-x-auto sticky top-0 z-10 w-full"
+                style={{ backgroundColor: "#1b1b1b", padding: "8px 0" }}
+              >
+                <div className="flex gap-4 justify-center w-full">
+                  <button
+                    type="button"
+                    className="px-6 py-3 rounded-md font-medium text-base transition-all"                    style={{
+                      backgroundColor:
+                        selectedLanguage === "JAVASCRIPT"
+                          ? "#e9204f"
+                          : "rgba(255,255,255,0.1)",
+                      color: "#f3f3f3",
+                      minWidth: "180px",
+                      width: "25%"
+                    }}
+                    onClick={() => setSelectedLanguage("JAVASCRIPT")}
+                  >
+                    JAVASCRIPT
+                  </button>
+                  <button
+                    type="button"
+                    className="px-6 py-3 rounded-md font-medium text-base transition-all"                    style={{
+                      backgroundColor:
+                        selectedLanguage === "PYTHON"
+                          ? "#e9204f"
+                          : "rgba(255,255,255,0.1)",
+                      color: "#f3f3f3",
+                      minWidth: "180px",
+                      width: "25%"
+                    }}
+                    onClick={() => setSelectedLanguage("PYTHON")}
+                  >
+                    PYTHON
+                  </button>
+                  <button
+                    type="button"
+                    className="px-6 py-3 rounded-md font-medium text-base transition-all"                    style={{
+                      backgroundColor:
+                        selectedLanguage === "JAVA"
+                          ? "#e9204f"
+                          : "rgba(255,255,255,0.1)",
+                      color: "#f3f3f3",
+                      minWidth: "180px",
+                      width: "25%"
+                    }}
+                    onClick={() => setSelectedLanguage("JAVA")}
+                  >
+                    JAVA
+                  </button>
+                </div>
+              </div>              {/* Language content sections in continuous scroll */}
+              <div className="space-y-14 overflow-y-auto w-full">
                 {/* Starter Code */}
                 <div>
-                  <h4 className="font-semibold text-lg mb-4">
+                  <h4
+                    className="font-semibold text-lg mb-4 px-4 py-2 rounded"
+                    style={{
+                      backgroundColor: "rgba(233,32,79,0.2)",
+                      color: "#f3f3f3",
+                    }}
+                  >
                     Starter Code Template
                   </h4>
-                  <div className="border rounded-md overflow-hidden">
+                  <div
+                    className="rounded-md overflow-hidden"
+                    style={{ border: "1px solid rgba(255,255,255,0.1)" }}
+                  >
                     <Controller
-                      name={`codeSnippets.${language}`}
+                      name={`codeSnippets.${selectedLanguage}`}
                       control={control}
                       render={({ field }) => (
                         <Editor
                           height="400px"
-                          language={language.toLowerCase()}
+                          language={selectedLanguage.toLowerCase()}
                           theme="vs-dark"
                           value={field.value}
                           onChange={field.onChange}
@@ -857,10 +926,10 @@ const CreateProblemForm = () => {
                       )}
                     />
                   </div>
-                  {errors.codeSnippets?.[language] && (
+                  {errors.codeSnippets?.[selectedLanguage] && (
                     <div className="mt-2">
-                      <span className="text-error text-sm">
-                        {errors.codeSnippets[language].message}
+                      <span style={{ color: "#e9204f" }}>
+                        {errors.codeSnippets[selectedLanguage].message}
                       </span>
                     </div>
                   )}
@@ -868,18 +937,27 @@ const CreateProblemForm = () => {
 
                 {/* Reference Solution */}
                 <div>
-                  <h4 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-success" />
+                  <h4
+                    className="font-semibold text-lg mb-4 px-4 py-2 rounded flex items-center gap-2"
+                    style={{
+                      backgroundColor: "rgba(233,32,79,0.2)",
+                      color: "#f3f3f3",
+                    }}
+                  >
+                    <CheckCircle2 className="w-5 h-5" />
                     Reference Solution
                   </h4>
-                  <div className="border rounded-md overflow-hidden">
+                  <div
+                    className="rounded-md overflow-hidden"
+                    style={{ border: "1px solid rgba(255,255,255,0.1)" }}
+                  >
                     <Controller
-                      name={`referenceSolutions.${language}`}
+                      name={`referenceSolutions.${selectedLanguage}`}
                       control={control}
                       render={({ field }) => (
                         <Editor
                           height="400px"
-                          language={language.toLowerCase()}
+                          language={selectedLanguage.toLowerCase()}
                           theme="vs-dark"
                           value={field.value}
                           onChange={field.onChange}
@@ -895,10 +973,10 @@ const CreateProblemForm = () => {
                       )}
                     />
                   </div>
-                  {errors.referenceSolutions?.[language] && (
+                  {errors.referenceSolutions?.[selectedLanguage] && (
                     <div className="mt-2">
-                      <span className="text-error text-sm">
-                        {errors.referenceSolutions[language].message}
+                      <span style={{ color: "#e9204f" }}>
+                        {errors.referenceSolutions[selectedLanguage].message}
                       </span>
                     </div>
                   )}
@@ -906,54 +984,77 @@ const CreateProblemForm = () => {
 
                 {/* Examples */}
                 <div>
-                  <h4 className="font-semibold text-lg mb-4">Example</h4>
+                  <h4
+                    className="font-semibold text-lg mb-4 px-4 py-2 rounded"
+                    style={{
+                      backgroundColor: "rgba(233,32,79,0.2)",
+                      color: "#f3f3f3",
+                    }}
+                  >
+                    Example
+                  </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="form-control">
-                      <label className="label">
-                        <span className="label-text font-medium">Input</span>
+                      <label className="block mb-2">
+                        <span style={{ color: "#f3f3f3" }}>Input</span>
                       </label>
                       <textarea
-                        className="textarea textarea-bordered min-h-24 w-full p-3 resize-y"
-                        {...register(`examples.${language}.input`)}
+                        className="min-h-24 w-full p-3 resize-y rounded-md"
+                        style={{
+                          backgroundColor: "#242424",
+                          color: "#f3f3f3",
+                          border: "1px solid rgba(255,255,255,0.1)",
+                        }}
+                        {...register(`examples.${selectedLanguage}.input`)}
                         placeholder="Example input"
                       />
-                      {errors.examples?.[language]?.input && (
-                        <label className="label">
-                          <span className="label-text-alt text-error">
-                            {errors.examples[language].input.message}
+                      {errors.examples?.[selectedLanguage]?.input && (
+                        <div className="mt-1">
+                          <span style={{ color: "#e9204f" }}>
+                            {errors.examples[selectedLanguage].input.message}
                           </span>
-                        </label>
+                        </div>
                       )}
                     </div>
                     <div className="form-control">
-                      <label className="label">
-                        <span className="label-text font-medium">Output</span>
+                      <label className="block mb-2">
+                        <span style={{ color: "#f3f3f3" }}>Output</span>
                       </label>
                       <textarea
-                        className="textarea textarea-bordered min-h-24 w-full p-3 resize-y"
-                        {...register(`examples.${language}.output`)}
+                        className="min-h-24 w-full p-3 resize-y rounded-md"
+                        style={{
+                          backgroundColor: "#242424",
+                          color: "#f3f3f3",
+                          border: "1px solid rgba(255,255,255,0.1)",
+                        }}
+                        {...register(`examples.${selectedLanguage}.output`)}
                         placeholder="Example output"
                       />
-                      {errors.examples?.[language]?.output && (
-                        <label className="label">
-                          <span className="label-text-alt text-error">
-                            {errors.examples[language].output.message}
+                      {errors.examples?.[selectedLanguage]?.output && (
+                        <div className="mt-1">
+                          <span style={{ color: "#e9204f" }}>
+                            {errors.examples[selectedLanguage].output.message}
                           </span>
-                        </label>
+                        </div>
                       )}
                     </div>
                     <div className="form-control md:col-span-2">
-                      <label className="label">
-                        <span className="label-text font-medium">
-                          Explanation
-                        </span>
+                      <label className="block mb-2">
+                        <span style={{ color: "#f3f3f3" }}>Explanation</span>
                       </label>
                       <textarea
-                        className="textarea textarea-bordered min-h-32 w-full p-3 resize-y"
-                        {...register(`examples.${language}.explanation`)}
+                        className="min-h-32 w-full p-3 resize-y rounded-md"
+                        style={{
+                          backgroundColor: "#242424",
+                          color: "#f3f3f3",
+                          border: "1px solid rgba(255,255,255,0.1)",
+                        }}
+                        {...register(
+                          `examples.${selectedLanguage}.explanation`
+                        )}
                         placeholder="Explain the example"
                       />
-                    </div>{" "}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1020,71 +1121,75 @@ const CreateProblemForm = () => {
       default:
         return null;
     }
-  };
-  // Custom style variables for the color palette
-  const customColors = {
-    background: "#1b1b1b",
-    accent: "#e9204f",
-    text: "#f3f3f3"
-  };
-
-  return (
-    <div className="min-h-screen w-full" style={{ backgroundColor: customColors.background, color: customColors.text }}>
-      <form onSubmit={handleSubmit(onSubmit)} className="py-6 h-full">
+  };  return (
+    <div className="min-h-screen w-screen" style={{ 
+      backgroundColor: "#f3f3f3",
+      "--container-padding": "1.5rem"
+    }}>
+      <form onSubmit={handleSubmit(onSubmit)} className="py-8 w-full">
         {/* Header with sample loaders */}
-        <header className="w-full px-4 mb-6">
-          <div className="p-4 md:p-6 rounded-lg flex flex-col md:flex-row justify-between items-center gap-4" 
-               style={{ backgroundColor: "#242424", borderBottom: `2px solid ${customColors.accent}` }}>
+        <header className="w-full px-6 mb-6">
+          <div
+            className="p-4 md:p-6 rounded-xl shadow flex flex-col md:flex-row justify-between items-center gap-4"
+            style={{ backgroundColor: "#1b1b1b", color: "#f3f3f3" }}
+          >
             <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-3">
-              <FileText className="w-8 h-8" style={{ color: customColors.accent }} />
-              <span style={{ color: customColors.text }}>Create Problem</span>
+              <FileText className="w-8 h-8" style={{ color: "#e9204f" }} />
+              Create Problem
             </h1>
 
             <div className="flex flex-wrap items-center gap-3">
               <div className="join">
                 <button
                   type="button"
-                  className="px-4 py-2 font-medium"
-                  style={{ 
-                    backgroundColor: sampleType === "DP" ? customColors.accent : "#242424",
-                    color: sampleType === "DP" ? "#fff" : customColors.text,
-                    border: `1px solid ${customColors.accent}`,
-                    borderTopLeftRadius: "0.5rem",
-                    borderBottomLeftRadius: "0.5rem"
+                  className="btn join-item"
+                  style={{
+                    backgroundColor:
+                      sampleType === "DP" ? "#e9204f" : "rgba(255,255,255,0.1)",
+                    color: "#f3f3f3",
+                    border: "none",
                   }}
-                  onClick={() => setSampleType("array")}
+                  onClick={() => setSampleType("DP")}
                 >
                   DP Problem
                 </button>
                 <button
                   type="button"
-                  className="px-4 py-2 font-medium"
-                  style={{ 
-                    backgroundColor: sampleType === "string" ? customColors.accent : "#242424",
-                    color: sampleType === "string" ? "#fff" : customColors.text,
-                    border: `1px solid ${customColors.accent}`,
-                    borderTopRightRadius: "0.5rem",
-                    borderBottomRightRadius: "0.5rem"
+                  className="btn join-item"
+                  style={{
+                    backgroundColor:
+                      sampleType === "string"
+                        ? "#e9204f"
+                        : "rgba(255,255,255,0.1)",
+                    color: "#f3f3f3",
+                    border: "none",
                   }}
                   onClick={() => setSampleType("string")}
                 >
                   String Problem
                 </button>
-              </div>
+              </div>{" "}
               <button
                 type="button"
-                className="px-4 py-2 font-medium flex items-center gap-2 rounded"
-                style={{ backgroundColor: "#242424", border: `1px solid ${customColors.accent}`, color: customColors.text }}
+                className="btn gap-2"
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.1)",
+                  color: "#f3f3f3",
+                  border: "1px solid rgba(255,255,255,0.2)",
+                }}
                 onClick={loadSampleData}
               >
-                <Download className="w-4 h-4" style={{ color: customColors.accent }} />
+                <Download className="w-4 h-4" />
                 Load Sample
               </button>
-
-              <button 
-                type="submit" 
-                className="px-4 py-2 font-medium flex items-center gap-2 rounded"
-                style={{ backgroundColor: customColors.accent, color: "#fff" }}
+              <button
+                type="submit"
+                className="btn gap-2"
+                style={{
+                  backgroundColor: "#e9204f",
+                  color: "#f3f3f3",
+                  border: "none",
+                }}
               >
                 {isLoading ? (
                   <span className="loading loading-spinner text-white"></span>
@@ -1096,37 +1201,57 @@ const CreateProblemForm = () => {
                 )}
               </button>
             </div>
-          </div>
-        </header>
-
-        <div className="container mx-auto px-4">
+          </div>        </header>
+        <div className="w-full px-6">
           {/* Section Navigation */}
-          <div className="bg-base-100 p-4 mb-6 rounded-xl shadow overflow-x-auto">
+          <div
+            className="p-4 mb-6 rounded-xl shadow overflow-x-auto"
+            style={{ backgroundColor: "#1b1b1b" }}
+          >
             <div className="flex space-x-2 md:space-x-4">
               {sections.map((section) => (
                 <button
                   key={section.id}
                   type="button"
-                  className={`btn ${
-                    activeSection === section.id ? "btn-primary" : "btn-ghost"
-                  } flex-nowrap whitespace-nowrap`}
+                  className="flex-nowrap whitespace-nowrap px-4 py-2 rounded-md font-medium transition-all flex items-center"
+                  style={{
+                    backgroundColor:
+                      activeSection === section.id
+                        ? "#e9204f"
+                        : "rgba(255,255,255,0.1)",
+                    color: "#f3f3f3",
+                  }}
                   onClick={() => setActiveSection(section.id)}
                 >
-                  <span className="mr-2">{section.icon}</span>
+                  <span
+                    className="mr-2"
+                    style={{
+                      color:
+                        activeSection === section.id ? "#f3f3f3" : "#e9204f",
+                    }}
+                  >
+                    {section.icon}
+                  </span>
                   {section.label}
                 </button>
               ))}
             </div>
           </div>
-
           {/* Current Section Content */}
-          {renderFormSection()}
-
-          {/* Navigation Controls */}
-          <div className="flex justify-between mt-8">
+          {renderFormSection()}          {/* Navigation Controls */}
+          <div className="flex justify-between mt-8 w-full">
             <button
               type="button"
-              className="btn btn-outline"
+              className="px-6 py-2 rounded-md font-medium transition-all"
+              style={{
+                backgroundColor: "transparent",
+                color: "#1b1b1b",
+                border: "1px solid #1b1b1b",
+                opacity:
+                  sections.findIndex((s) => s.id === activeSection) === 0
+                    ? 0.5
+                    : 1,
+              }}
               onClick={() => {
                 const currentIndex = sections.findIndex(
                   (s) => s.id === activeSection
@@ -1142,7 +1267,17 @@ const CreateProblemForm = () => {
 
             <button
               type="button"
-              className="btn btn-outline"
+              className="px-6 py-2 rounded-md font-medium transition-all"
+              style={{
+                backgroundColor: "#e9204f",
+                color: "#f3f3f3",
+                border: "none",
+                opacity:
+                  sections.findIndex((s) => s.id === activeSection) ===
+                  sections.length - 1
+                    ? 0.5
+                    : 1,
+              }}
               onClick={() => {
                 const currentIndex = sections.findIndex(
                   (s) => s.id === activeSection
