@@ -816,10 +816,9 @@ const CreateProblemForm = () => {
         );      case "language": {
         return (
           <div
-            className="w-full"
-            style={{
-              backgroundColor: "#1b1b1b",
-              color: "#f3f3f3",
+            className="w-full"            style={{
+              backgroundColor: "#000000",
+              color: "#ffffff",
               minHeight: "calc(100vh - 250px)",
               width: "100vw",
               maxWidth: "100%",
@@ -827,18 +826,16 @@ const CreateProblemForm = () => {
               marginRight: "calc(-1 * var(--container-padding, 1.5rem))",
             }}
           >
-            <div className="p-6 md:p-8 w-full">
-              <h3
+            <div className="p-6 md:p-8 w-full">              <h3
                 className="text-xl font-bold mb-6 flex items-center gap-2"
-                style={{ color: "#f3f3f3" }}
+                style={{ color: "#ffffff" }}
               >
-                <Code2 className="w-6 h-6" style={{ color: "#e9204f" }} />
+                <Code2 className="w-6 h-6" style={{ color: "#ffffff" }} />
                 Language Implementation
               </h3>
 
-              {/* Language Tabs */}              <div
-                className="mb-8 overflow-x-auto sticky top-0 z-10 w-full"
-                style={{ backgroundColor: "#1b1b1b", padding: "8px 0" }}
+              {/* Language Tabs */}              <div                className="mb-8 overflow-x-auto sticky top-0 z-10 w-full"
+                style={{ backgroundColor: "#000000", padding: "8px 0" }}
               >
                 <div className="flex gap-4 justify-center w-full">
                   <button
@@ -846,11 +843,10 @@ const CreateProblemForm = () => {
                     className="px-6 py-3 rounded-md font-medium text-base transition-all"                    style={{
                       backgroundColor:
                         selectedLanguage === "JAVASCRIPT"
-                          ? "#e9204f"
-                          : "rgba(255,255,255,0.1)",
-                      color: "#f3f3f3",
-                      minWidth: "180px",
-                      width: "25%"
+                          ? "#333333"
+                          : "rgba(255,255,255,0.2)",
+                      color: "#ffffff",
+                      minWidth: "120px",
                     }}
                     onClick={() => setSelectedLanguage("JAVASCRIPT")}
                   >
@@ -861,11 +857,10 @@ const CreateProblemForm = () => {
                     className="px-6 py-3 rounded-md font-medium text-base transition-all"                    style={{
                       backgroundColor:
                         selectedLanguage === "PYTHON"
-                          ? "#e9204f"
-                          : "rgba(255,255,255,0.1)",
-                      color: "#f3f3f3",
-                      minWidth: "180px",
-                      width: "25%"
+                          ? "#333333"
+                          : "rgba(255,255,255,0.2)",
+                      color: "#ffffff",
+                      minWidth: "120px",
                     }}
                     onClick={() => setSelectedLanguage("PYTHON")}
                   >
@@ -873,29 +868,29 @@ const CreateProblemForm = () => {
                   </button>
                   <button
                     type="button"
-                    className="px-6 py-3 rounded-md font-medium text-base transition-all"                    style={{
-                      backgroundColor:
+                    className="px-6 py-3 rounded-md font-medium text-base transition-all"
+                    style={{                      backgroundColor:
                         selectedLanguage === "JAVA"
-                          ? "#e9204f"
-                          : "rgba(255,255,255,0.1)",
-                      color: "#f3f3f3",
-                      minWidth: "180px",
-                      width: "25%"
+                          ? "#333333"
+                          : "rgba(255,255,255,0.2)",
+                      color: "#ffffff",
+                      minWidth: "120px",
                     }}
                     onClick={() => setSelectedLanguage("JAVA")}
                   >
                     JAVA
                   </button>
                 </div>
-              </div>              {/* Language content sections in continuous scroll */}
-              <div className="space-y-14 overflow-y-auto w-full">
+              </div>
+
+              {/* Language content sections in continuous scroll */}
+              <div className="space-y-14 overflow-y-auto">
                 {/* Starter Code */}
-                <div>
-                  <h4
+                <div>                  <h4
                     className="font-semibold text-lg mb-4 px-4 py-2 rounded"
                     style={{
-                      backgroundColor: "rgba(233,32,79,0.2)",
-                      color: "#f3f3f3",
+                      backgroundColor: "rgba(255,255,255,0.1)",
+                      color: "#ffffff",
                     }}
                   >
                     Starter Code Template
@@ -936,12 +931,11 @@ const CreateProblemForm = () => {
                 </div>
 
                 {/* Reference Solution */}
-                <div>
-                  <h4
+                <div>                  <h4
                     className="font-semibold text-lg mb-4 px-4 py-2 rounded flex items-center gap-2"
                     style={{
-                      backgroundColor: "rgba(233,32,79,0.2)",
-                      color: "#f3f3f3",
+                      backgroundColor: "rgba(255,255,255,0.1)",
+                      color: "#ffffff",
                     }}
                   >
                     <CheckCircle2 className="w-5 h-5" />
@@ -983,12 +977,11 @@ const CreateProblemForm = () => {
                 </div>
 
                 {/* Examples */}
-                <div>
-                  <h4
+                <div>                  <h4
                     className="font-semibold text-lg mb-4 px-4 py-2 rounded"
                     style={{
-                      backgroundColor: "rgba(233,32,79,0.2)",
-                      color: "#f3f3f3",
+                      backgroundColor: "rgba(255,255,255,0.1)",
+                      color: "#ffffff",
                     }}
                   >
                     Example
@@ -996,7 +989,7 @@ const CreateProblemForm = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="form-control">
                       <label className="block mb-2">
-                        <span style={{ color: "#f3f3f3" }}>Input</span>
+                        <span style={{ color: "#ffffff" }}>Input</span>
                       </label>
                       <textarea
                         className="min-h-24 w-full p-3 resize-y rounded-md"
@@ -1009,8 +1002,7 @@ const CreateProblemForm = () => {
                         placeholder="Example input"
                       />
                       {errors.examples?.[selectedLanguage]?.input && (
-                        <div className="mt-1">
-                          <span style={{ color: "#e9204f" }}>
+                        <div className="mt-1">                          <span style={{ color: "#ff5555" }}>
                             {errors.examples[selectedLanguage].input.message}
                           </span>
                         </div>
@@ -1121,20 +1113,20 @@ const CreateProblemForm = () => {
       default:
         return null;
     }
-  };  return (
+  };  
+  return (
     <div className="min-h-screen w-screen" style={{ 
-      backgroundColor: "#f3f3f3",
+      backgroundColor: "#ffffff",
       "--container-padding": "1.5rem"
     }}>
       <form onSubmit={handleSubmit(onSubmit)} className="py-8 w-full">
         {/* Header with sample loaders */}
-        <header className="w-full px-6 mb-6">
-          <div
+        <header className="w-full px-6 mb-6">          <div
             className="p-4 md:p-6 rounded-xl shadow flex flex-col md:flex-row justify-between items-center gap-4"
-            style={{ backgroundColor: "#1b1b1b", color: "#f3f3f3" }}
+            style={{ backgroundColor: "#000000", color: "#ffffff" }}
           >
             <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-3">
-              <FileText className="w-8 h-8" style={{ color: "#e9204f" }} />
+              <FileText className="w-8 h-8" style={{ color: "#ffffff" }} />
               Create Problem
             </h1>
 
@@ -1142,11 +1134,10 @@ const CreateProblemForm = () => {
               <div className="join">
                 <button
                   type="button"
-                  className="btn join-item"
-                  style={{
+                  className="btn join-item"                  style={{
                     backgroundColor:
-                      sampleType === "DP" ? "#e9204f" : "rgba(255,255,255,0.1)",
-                    color: "#f3f3f3",
+                      sampleType === "DP" ? "#333333" : "rgba(255,255,255,0.2)",
+                    color: "#ffffff",
                     border: "none",
                   }}
                   onClick={() => setSampleType("DP")}
@@ -1155,13 +1146,12 @@ const CreateProblemForm = () => {
                 </button>
                 <button
                   type="button"
-                  className="btn join-item"
-                  style={{
+                  className="btn join-item"                  style={{
                     backgroundColor:
                       sampleType === "string"
-                        ? "#e9204f"
-                        : "rgba(255,255,255,0.1)",
-                    color: "#f3f3f3",
+                        ? "#333333"
+                        : "rgba(255,255,255,0.2)",
+                    color: "#ffffff",
                     border: "none",
                   }}
                   onClick={() => setSampleType("string")}
@@ -1171,11 +1161,10 @@ const CreateProblemForm = () => {
               </div>{" "}
               <button
                 type="button"
-                className="btn gap-2"
-                style={{
-                  backgroundColor: "rgba(255,255,255,0.1)",
-                  color: "#f3f3f3",
-                  border: "1px solid rgba(255,255,255,0.2)",
+                className="btn gap-2"                style={{
+                  backgroundColor: "rgba(255,255,255,0.2)",
+                  color: "#ffffff",
+                  border: "1px solid rgba(255,255,255,0.3)",
                 }}
                 onClick={loadSampleData}
               >
@@ -1184,10 +1173,9 @@ const CreateProblemForm = () => {
               </button>
               <button
                 type="submit"
-                className="btn gap-2"
-                style={{
-                  backgroundColor: "#e9204f",
-                  color: "#f3f3f3",
+                className="btn gap-2"                style={{
+                  backgroundColor: "#333333",
+                  color: "#ffffff",
                   border: "none",
                 }}
               >
@@ -1203,31 +1191,27 @@ const CreateProblemForm = () => {
             </div>
           </div>        </header>
         <div className="w-full px-6">
-          {/* Section Navigation */}
-          <div
+          {/* Section Navigation */}          <div
             className="p-4 mb-6 rounded-xl shadow overflow-x-auto"
-            style={{ backgroundColor: "#1b1b1b" }}
+            style={{ backgroundColor: "#000000" }}
           >
             <div className="flex space-x-2 md:space-x-4">
               {sections.map((section) => (
                 <button
                   key={section.id}
                   type="button"
-                  className="flex-nowrap whitespace-nowrap px-4 py-2 rounded-md font-medium transition-all flex items-center"
-                  style={{
+                  className="flex-nowrap whitespace-nowrap px-4 py-2 rounded-md font-medium transition-all flex items-center"                  style={{
                     backgroundColor:
                       activeSection === section.id
-                        ? "#e9204f"
-                        : "rgba(255,255,255,0.1)",
-                    color: "#f3f3f3",
+                        ? "#333333"
+                        : "rgba(255,255,255,0.2)",
+                    color: "#ffffff",
                   }}
                   onClick={() => setActiveSection(section.id)}
                 >
                   <span
-                    className="mr-2"
-                    style={{
-                      color:
-                        activeSection === section.id ? "#f3f3f3" : "#e9204f",
+                    className="mr-2"                    style={{
+                      color: "#ffffff",
                     }}
                   >
                     {section.icon}
@@ -1243,10 +1227,9 @@ const CreateProblemForm = () => {
             <button
               type="button"
               className="px-6 py-2 rounded-md font-medium transition-all"
-              style={{
-                backgroundColor: "transparent",
-                color: "#1b1b1b",
-                border: "1px solid #1b1b1b",
+              style={{                backgroundColor: "#f0f0f0",
+                color: "#000000",
+                border: "1px solid #000000",
                 opacity:
                   sections.findIndex((s) => s.id === activeSection) === 0
                     ? 0.5
@@ -1268,9 +1251,8 @@ const CreateProblemForm = () => {
             <button
               type="button"
               className="px-6 py-2 rounded-md font-medium transition-all"
-              style={{
-                backgroundColor: "#e9204f",
-                color: "#f3f3f3",
+              style={{                backgroundColor: "#000000",
+                color: "#ffffff",
                 border: "none",
                 opacity:
                   sections.findIndex((s) => s.id === activeSection) ===

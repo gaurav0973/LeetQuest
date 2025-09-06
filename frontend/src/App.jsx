@@ -20,43 +20,36 @@ const App = () => {
     checkAuth();
   }, [checkAuth]);
 
-  if (isCheckingAuth && !authUser) {
+  if (isCheckingAuth) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader className="size-10 animate-spin" />
+      <div className="flex items-center justify-center h-screen bg-base-200">
+        <Loader className="size-10 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-start ">
-      <Toaster />
+    <div className="min-h-screen w-full bg-gradient-to-br from-base-300 to-base-200 text-base-content">
+      <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route
-            index
-            element={authUser ? <HomePage /> : <Navigate to={"/login"} />}
-          />
+        <Route path="/" element={authUser ? <Layout /> : <Navigate to="/login" />}>
 
-          <Route
-            path="/profile"
-            element={authUser ? <ProfilePage /> : <Navigate to={"/login"} />}
-          />
+          <Route index element={<HomePage />} />
 
-          <Route
-            path="/problem/:id"
-            element={authUser ? <ProblemPage /> : <Navigate to={"/login"} />}
-          />
+          <Route path="/profile" element={<ProfilePage />} />
+
+          <Route path="/problem/:id" element={<ProblemPage />} />
+
         </Route>
 
         <Route
           path="/login"
-          element={!authUser ? <LoginPage /> : <Navigate to={"/"} />}
+          element={!authUser ? <LoginPage /> : <Navigate to="/" />}
         />
 
         <Route
           path="/signup"
-          element={!authUser ? <SignUpPage /> : <Navigate to={"/"} />}
+          element={!authUser ? <SignUpPage /> : <Navigate to="/" />}
         />
 
         <Route element={<AdminRoute />}>
@@ -65,6 +58,8 @@ const App = () => {
             element={authUser ? <AddProblem /> : <Navigate to="/" />}
           />
         </Route>
+
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </div>
   );

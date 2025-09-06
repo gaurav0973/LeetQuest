@@ -19,150 +19,134 @@ const Navbar = () => {
   const { authUser } = useAuthStore();
   const location = useLocation();
 
-  const isActive = (path) => {
-    return location.pathname === path;
-  };
+  const isActive = (path) => location.pathname === path;
+
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-gray-800 bg-black/80 backdrop-blur-lg">
+    <nav
+      className="sticky top-0 z-50 w-full border-b backdrop-blur-lg"
+      style={{
+        backgroundColor: "#F0FDFD",
+        borderColor: "#B48C8E",
+      }}
+    >
       <div className="flex w-full justify-between items-center mx-auto px-4 lg:px-8 xl:px-12 py-3">
         {/* Logo Section */}
         <Link to="/" className="flex items-center gap-2">
           <img
             src="/leetlab.svg"
-            className="h-8 w-8 bg-white/10 border border-gray-700 p-1 rounded-md"
+            className="h-8 w-8 p-1 rounded-md"
+            style={{
+              backgroundColor: "#F0FDFD",
+              border: "1px solid #B48C8E",
+            }}
             alt="LeetLab Logo"
           />
-          <span className="text-xl font-bold tracking-tight text-white">
+          <span className="text-xl font-bold tracking-tight" style={{ color: "#B48C8E" }}>
             LeetLab
           </span>
         </Link>
 
         {/* Navigation Links */}
         <div className="hidden md:flex items-center gap-1">
-          <Link
-            to="/"
-            className={`px-3 py-2 rounded-md text-sm font-medium ${
-              isActive("/")
-                ? "bg-white/10 text-white"
-                : "text-gray-300 hover:bg-white/5 hover:text-white"
-            }`}
-          >
-            <span className="flex items-center gap-1.5">
-              <Home className="w-4 h-4" />
-              Problems
-            </span>
-          </Link>
+          {[
+            { to: "/", label: "Problems", icon: <Home className="w-4 h-4" /> },
+            { to: "/playlists", label: "Playlists", icon: <BookOpen className="w-4 h-4" /> },
+            { to: "/leaderboard", label: "Leaderboard", icon: <Award className="w-4 h-4" /> },
+          ].map(({ to, label, icon }) => (
+            <Link
+              key={to}
+              to={to}
+              className={`px-3 py-2 rounded-md text-sm font-medium ${
+                isActive(to)
+                  ? "bg-[#B48C8E22] text-[#B48C8E]"
+                  : "text-[#B48C8E] hover:bg-[#B48C8E11]"
+              }`}
+            >
+              <span className="flex items-center gap-1.5">{icon} {label}</span>
+            </Link>
+          ))}
 
+          {/* Explore Dropdown */}
           <div className="relative group">
-            <button className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white flex items-center gap-1.5">
+            <button className="px-3 py-2 rounded-md text-sm font-medium text-[#B48C8E] hover:bg-[#B48C8E11] flex items-center gap-1.5">
               <ListFilter className="w-4 h-4" />
               Explore
               <ChevronDown className="w-3 h-3" />
             </button>
-            <div className="absolute left-0 mt-1 w-48 rounded-md shadow-lg bg-black border border-gray-700 hidden group-hover:block">
+            <div className="absolute left-0 mt-1 w-48 rounded-md shadow-lg bg-[#F0FDFD] border border-[#B48C8E] hidden group-hover:block">
               <div className="py-1">
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5"
-                >
-                  Top Interview Questions
-                </a>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5"
-                >
-                  Top 100 Liked Questions
-                </a>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5"
-                >
-                  Dynamic Programming
-                </a>
+                {["Top Interview Questions", "Top 100 Liked Questions", "Dynamic Programming"].map(
+                  (text) => (
+                    <a
+                      key={text}
+                      href="#"
+                      className="block px-4 py-2 text-sm text-[#B48C8E] hover:bg-[#B48C8E11]"
+                    >
+                      {text}
+                    </a>
+                  )
+                )}
               </div>
             </div>
           </div>
-
-          <Link
-            to="/playlists"
-            className={`px-3 py-2 rounded-md text-sm font-medium ${
-              isActive("/playlists")
-                ? "bg-white/10 text-white"
-                : "text-gray-300 hover:bg-white/5 hover:text-white"
-            }`}
-          >
-            <span className="flex items-center gap-1.5">
-              <BookOpen className="w-4 h-4" />
-              Playlists
-            </span>
-          </Link>
-
-          <Link
-            to="/leaderboard"
-            className={`px-3 py-2 rounded-md text-sm font-medium ${
-              isActive("/leaderboard")
-                ? "bg-white/10 text-white"
-                : "text-gray-300 hover:bg-white/5 hover:text-white"
-            }`}
-          >
-            <span className="flex items-center gap-1.5">
-              <Award className="w-4 h-4" />
-              Leaderboard
-            </span>
-          </Link>
         </div>
 
-        {/* Search and User Profile */}
+        {/* Search & User Profile */}
         <div className="flex items-center gap-4">
           {/* Search Bar */}
           <div className="relative hidden md:block">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <Search className="w-4 h-4 text-gray-400" />
+              <Search className="w-4 h-4 text-[#B48C8E]" />
             </div>
             <input
               type="text"
-              className="block w-full pl-10 pr-3 py-1.5 text-sm text-white bg-black/40 border border-gray-700 rounded-md focus:ring-1 focus:ring-white focus:outline-none"
+              className="block w-full pl-10 pr-3 py-1.5 text-sm rounded-md focus:outline-none"
               placeholder="Search problems..."
+              style={{
+                backgroundColor: "#F0FDFD",
+                color: "#B48C8E",
+                border: "1px solid #B48C8E",
+              }}
             />
           </div>
 
-          {/* User Profile and Dropdown */}
+          {/* User Dropdown */}
           <div className="dropdown dropdown-end">
             <label
               tabIndex={0}
-              className="btn btn-ghost btn-sm bg-white/5 border border-gray-800 rounded-md p-2 flex items-center gap-2"
+              className="btn btn-ghost btn-sm rounded-md p-2 flex items-center gap-2"
+              style={{ backgroundColor: "#F0FDFD", border: "1px solid #B48C8E" }}
             >
               <div className="w-6 h-6 rounded-full overflow-hidden">
                 <img
-                  src={
-                    authUser?.image ||
-                    "https://avatar.iran.liara.run/public/boy"
-                  }
+                  src={authUser?.image || "https://avatar.iran.liara.run/public/boy"}
                   alt="User Avatar"
                   className="object-cover w-full h-full"
                 />
               </div>
-              <span className="hidden md:inline text-sm font-medium text-white">
+              <span className="hidden md:inline text-sm font-medium text-[#B48C8E]">
                 {authUser?.name}
               </span>
-              <ChevronDown className="w-4 h-4 text-gray-400" />
+              <ChevronDown className="w-4 h-4 text-[#B48C8E]" />
             </label>
 
             <ul
               tabIndex={0}
-              className="dropdown-content menu menu-sm mt-2 z-[1] p-2 shadow-xl bg-black border border-gray-800 rounded-md w-56"
+              className="dropdown-content menu menu-sm mt-2 z-[1] p-2 shadow-xl rounded-md w-56"
+              style={{
+                backgroundColor: "#F0FDFD",
+                border: "1px solid #B48C8E",
+              }}
             >
-              <li className="px-3 py-2 border-b border-gray-800">
-                <p className="text-sm font-medium text-white">
-                  {authUser?.name}
-                </p>
-                <p className="text-xs text-gray-400">{authUser?.email}</p>
+              <li className="px-3 py-2 border-b" style={{ borderColor: "#B48C8E" }}>
+                <p className="text-sm font-medium text-[#B48C8E]">{authUser?.name}</p>
+                <p className="text-xs text-[#B48C8E99]">{authUser?.email}</p>
               </li>
 
               <li>
                 <Link
                   to="/profile"
-                  className="flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white"
+                  className="flex items-center gap-2 px-3 py-2 text-sm text-[#B48C8E] hover:bg-[#B48C8E11]"
                 >
                   <User className="w-4 h-4" />
                   My Profile
@@ -173,7 +157,7 @@ const Navbar = () => {
                 <li>
                   <Link
                     to="/add-problem"
-                    className="flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white"
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-[#B48C8E] hover:bg-[#B48C8E11]"
                   >
                     <LayoutIcon className="w-4 h-4" />
                     Admin Dashboard
@@ -182,9 +166,11 @@ const Navbar = () => {
               )}
 
               <li>
-                <LogoutButton className="flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white">
-                  <LogOut className="w-4 h-4" />
-                  Logout
+                <LogoutButton>
+                  <span className="flex items-center gap-2 text-sm text-[#B48C8E] hover:bg-[#B48C8E11] px-3 py-2">
+                    <LogOut className="w-4 h-4" />
+                    Logout
+                  </span>
                 </LogoutButton>
               </li>
             </ul>

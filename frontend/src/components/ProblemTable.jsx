@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Link } from "react-router-dom";
-import { Bookmark, PencilIcon, Trash, TrashIcon, Plus } from "lucide-react";
+import { Bookmark, TrashIcon, Plus } from "lucide-react";
 import { useActions } from "../store/useAction";
 import AddToPlaylistModal from "./AddToPlaylist";
 import CreatePlaylistModal from "./CreatePlaylistModal";
@@ -16,352 +16,174 @@ const ProblemsTable = ({ problems }) => {
   const [selectedTag, setSelectedTag] = useState("ALL");
   const [currentPage, setCurrentPage] = useState(1);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isAddToPlaylistModalOpen, setIsAddToPlaylistModalOpen] =
-    useState(false);
+  const [isAddToPlaylistModalOpen, setIsAddToPlaylistModalOpen] = useState(false);
   const [selectedProblemId, setSelectedProblemId] = useState(null);
 
-  // Reset page when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [difficulty, selectedTag, search]);
+  useEffect(() => setCurrentPage(1), [difficulty, selectedTag, search]);
 
-  // Extract all unique tags from problems
   const allTags = useMemo(() => {
     if (!Array.isArray(problems)) return [];
     const tagsSet = new Set();
     problems.forEach((p) => p.tags?.forEach((t) => tagsSet.add(t)));
     return Array.from(tagsSet);
   }, [problems]);
-  // Define allowed difficulties - used in the UI buttons
 
-  // Filter problems based on search, difficulty, and tags
   const filteredProblems = useMemo(() => {
     return (problems || [])
-      .filter((problem) =>
-        problem.title.toLowerCase().includes(search.toLowerCase())
-      )
-      .filter((problem) =>
-        difficulty === "ALL" ? true : problem.difficulty === difficulty
-      )
-      .filter((problem) =>
-        selectedTag === "ALL" ? true : problem.tags?.includes(selectedTag)
-      );
+      .filter((p) => p.title.toLowerCase().includes(search.toLowerCase()))
+      .filter((p) => (difficulty === "ALL" ? true : p.difficulty === difficulty))
+      .filter((p) => (selectedTag === "ALL" ? true : p.tags?.includes(selectedTag)));
   }, [problems, search, difficulty, selectedTag]);
 
-  // Pagination logic
   const itemsPerPage = 5;
   const totalPages = Math.ceil(filteredProblems.length / itemsPerPage);
   const paginatedProblems = useMemo(() => {
-    return filteredProblems.slice(
-      (currentPage - 1) * itemsPerPage,
-      currentPage * itemsPerPage
-    );
+    return filteredProblems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   }, [filteredProblems, currentPage]);
 
-  const handleDelete = (id) => {
-    onDeleteProblem(id);
-  };
-
-  const handleCreatePlaylist = async (data) => {
-    await createPlaylist(data);
-  };
-
-  const handleAddToPlaylist = (problemId) => {
-    setSelectedProblemId(problemId);
+  const handleDelete = (id) => onDeleteProblem(id);
+  const handleCreatePlaylist = async (data) => await createPlaylist(data);
+  const handleAddToPlaylist = (id) => {
+    setSelectedProblemId(id);
     setIsAddToPlaylistModalOpen(true);
   };
+
+  const themedButton = (active, text, onClick) => (
+    <button
+      className={`px-4 py-2 text-sm font-medium rounded-md whitespace-nowrap transition-colors ${
+        active ? "bg-[#B48C8E22] text-[#B48C8E]" : "text-[#B48C8E] hover:bg-[#B48C8E11]"
+      }`}
+      onClick={onClick}
+    >
+      {text}
+    </button>
+  );
+
   return (
-    <div className="w-full">
-      {/* Navigation Tabs */}
+    <div className="w-full text-[#B48C8E]">
       <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-2">
-          <button
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
-              difficulty === "ALL"
-                ? "bg-white text-black"
-                : "bg-white/10 text-white hover:bg-white/20"
-            }`}
-            onClick={() => setDifficulty("ALL")}
-          >
-            All Problems
-          </button>
-          <button
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
-              difficulty === "EASY"
-                ? "bg-green-500 text-black"
-                : "bg-green-900/20 text-green-500 hover:bg-green-900/30"
-            }`}
-            onClick={() => setDifficulty("EASY")}
-          >
-            Easy
-          </button>
-          <button
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
-              difficulty === "MEDIUM"
-                ? "bg-yellow-500 text-black"
-                : "bg-yellow-900/20 text-yellow-500 hover:bg-yellow-900/30"
-            }`}
-            onClick={() => setDifficulty("MEDIUM")}
-          >
-            Medium
-          </button>
-          <button
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
-              difficulty === "HARD"
-                ? "bg-red-500 text-black"
-                : "bg-red-900/20 text-red-500 hover:bg-red-900/30"
-            }`}
-            onClick={() => setDifficulty("HARD")}
-          >
-            Hard
-          </button>{" "}
-          <button
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
-              selectedTag === "ALL"
-                ? "bg-indigo-500 text-white"
-                : "bg-indigo-900/20 text-indigo-400 hover:bg-indigo-900/30"
-            }`}
-            onClick={() => setSelectedTag("ALL")}
-          >
-            All Tags
-          </button>
-          {allTags.length > 0 &&
-            allTags.slice(0, 3).map((tag) => (
-              <button
-                key={tag}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
-                  selectedTag === tag
-                    ? "bg-blue-500 text-white"
-                    : "bg-black/40 text-gray-300 hover:bg-black/60"
-                }`}
-                onClick={() => setSelectedTag(tag)}
-              >
-                {tag}
-              </button>
-            ))}
-          {allTags.length > 3 && (
-            <div className="relative group">
-              <button className="px-4 py-2 bg-black/40 text-gray-300 hover:bg-black/60 text-sm font-medium rounded-md transition-colors whitespace-nowrap">
-                More Tags
-              </button>
-              <div className="absolute left-0 mt-2 w-48 p-2 bg-black border border-gray-700 rounded-md shadow-lg hidden group-hover:block z-10">
-                <div className="grid grid-cols-2 gap-2">
-                  {allTags.slice(3).map((tag) => (
-                    <button
-                      key={tag}
-                      className={`px-2 py-1 text-xs font-medium rounded transition-colors text-left ${
-                        selectedTag === tag
-                          ? "bg-blue-500 text-white"
-                          : "text-gray-300 hover:bg-white/5"
-                      }`}
-                      onClick={() => setSelectedTag(tag)}
-                    >
-                      {tag}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
+        <div className="flex items-center gap-2 overflow-x-auto pb-2">
+          {themedButton(difficulty === "ALL", "All Problems", () => setDifficulty("ALL"))}
+          {themedButton(difficulty === "EASY", "Easy", () => setDifficulty("EASY"))}
+          {themedButton(difficulty === "MEDIUM", "Medium", () => setDifficulty("MEDIUM"))}
+          {themedButton(difficulty === "HARD", "Hard", () => setDifficulty("HARD"))}
+          {themedButton(selectedTag === "ALL", "All Tags", () => setSelectedTag("ALL"))}
+          {allTags.slice(0, 3).map((tag) => themedButton(selectedTag === tag, tag, () => setSelectedTag(tag)))}
         </div>
-
-        <div className="flex items-center gap-2">
-          <button
-            className="px-4 py-2 bg-white text-black text-sm font-medium rounded-md hover:bg-white/90 transition-colors whitespace-nowrap"
-            onClick={() => setIsCreateModalOpen(true)}
-          >
-            <Plus className="w-4 h-4 inline mr-1.5" />
-            Create Playlist
-          </button>
-        </div>
+        <button
+          className="px-4 py-2 bg-[#B48C8E] text-white text-sm font-medium rounded-md hover:bg-[#a07678]"
+          onClick={() => setIsCreateModalOpen(true)}
+        >
+          <Plus className="w-4 h-4 inline mr-1.5" /> Create Playlist
+        </button>
       </div>
 
-      {/* Search Bar */}
-      <div className="relative mb-5">
-        <input
-          type="text"
-          className="w-full pl-10 pr-3 py-2 text-sm text-white bg-black/40 border border-gray-700 rounded-md focus:ring-1 focus:ring-white focus:outline-none"
-          placeholder="Search problems by title..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-gray-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
-        </div>
-      </div>
+      <input
+        type="text"
+        className="w-full mb-5 px-3 py-2 text-sm bg-[#F0FDFD] border border-[#B48C8E] rounded-md focus:outline-none"
+        placeholder="Search problems by title..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
 
-      {/* Table */}
-      <div className="overflow-x-auto border border-gray-800 rounded-md">
-        <table className="w-full border-collapse">
+      <div className="overflow-x-auto border border-[#B48C8E] rounded-md">
+        <table className="w-full">
           <thead>
-            <tr className="bg-black/30 border-b border-gray-800">
-              <th className="py-3 px-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-16">
-                Status
-              </th>
-              <th className="py-3 px-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                Title
-              </th>
-              <th className="py-3 px-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider hidden md:table-cell">
-                Tags
-              </th>
-              <th className="py-3 px-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-24">
-                Difficulty
-              </th>
-              <th className="py-3 px-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-24">
-                Actions
-              </th>
+            <tr className="bg-[#F0FDFD] border-b border-[#B48C8E] text-left text-xs uppercase">
+              <th className="py-3 px-4">Status</th>
+              <th className="py-3 px-4">Title</th>
+              <th className="py-3 px-4 hidden md:table-cell">Tags</th>
+              <th className="py-3 px-4">Difficulty</th>
+              <th className="py-3 px-4">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-800">
-            {paginatedProblems.length > 0 ? (
-              paginatedProblems.map((problem) => {
-                const isSolved =
-                  problem.solvedBy?.some?.(
-                    (user) => user.userId === authUser?.id
-                  ) || false;
-
-                return (
-                  <tr
-                    key={problem.id}
-                    className="hover:bg-white/5 transition-colors"
-                  >
-                    <td className="py-3 px-4">
-                      <div className="flex items-center justify-center">
-                        <div
-                          className={`w-3 h-3 rounded-full ${
-                            isSolved ? "bg-green-500" : "bg-gray-700"
-                          }`}
-                        ></div>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <Link
-                        to={`/problem/${problem.id}`}
-                        className="text-white hover:text-primary transition-colors"
-                      >
-                        {problem.title}
-                      </Link>
-                    </td>
-                    <td className="py-3 px-4 hidden md:table-cell">
-                      <div className="flex flex-wrap gap-1">
-                        {(problem.tags || []).slice(0, 2).map((tag, idx) => (
-                          <span
-                            key={idx}
-                            className="inline-block px-2 py-0.5 bg-white/5 border border-gray-700 rounded text-xs text-gray-300"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                        {(problem.tags || []).length > 2 && (
-                          <span className="text-xs text-gray-500">
-                            +{problem.tags.length - 2}
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          problem.difficulty === "EASY"
-                            ? "text-green-500 bg-green-900/20"
-                            : problem.difficulty === "MEDIUM"
-                              ? "text-yellow-500 bg-yellow-900/20"
-                              : "text-red-500 bg-red-900/20"
-                        }`}
-                      >
-                        {problem.difficulty.charAt(0) +
-                          problem.difficulty.slice(1).toLowerCase()}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center space-x-2">
-                        <button
-                          className="p-1.5 rounded-md hover:bg-white/10 transition-colors"
-                          onClick={() => handleAddToPlaylist(problem.id)}
-                          title="Add to Playlist"
+          <tbody>
+            {paginatedProblems.map((p) => {
+              const isSolved = p.solvedBy?.some((u) => u.userId === authUser?.id);
+              return (
+                <tr key={p.id} className="hover:bg-[#B48C8E11]">
+                  <td className="py-3 px-4 text-center">
+                    <div className={`w-3 h-3 rounded-full ${isSolved ? "bg-green-500" : "bg-[#B48C8E44]"}`} />
+                  </td>
+                  <td className="py-3 px-4">
+                    <Link to={`/problem/${p.id}`} className="hover:underline">
+                      {p.title}
+                    </Link>
+                  </td>
+                  <td className="py-3 px-4 hidden md:table-cell">
+                    <div className="flex flex-wrap gap-1">
+                      {(p.tags || []).slice(0, 2).map((tag, i) => (
+                        <span
+                          key={i}
+                          className="text-xs px-2 py-0.5 border rounded"
+                          style={{ backgroundColor: "#F0FDFD", color: "#B48C8E", borderColor: "#B48C8E" }}
                         >
-                          <Bookmark className="w-4 h-4 text-gray-400 hover:text-white" />
+                          {tag}
+                        </span>
+                      ))}
+                      {p.tags.length > 2 && (
+                        <span className="text-xs text-[#B48C8E]">+{p.tags.length - 2}</span>
+                      )}
+                    </div>
+                  </td>
+                  <td className="py-3 px-4">
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        p.difficulty === "EASY"
+                          ? "bg-green-200 text-green-700"
+                          : p.difficulty === "MEDIUM"
+                          ? "bg-yellow-200 text-yellow-700"
+                          : "bg-red-200 text-red-700"
+                      }`}
+                    >
+                      {p.difficulty.charAt(0) + p.difficulty.slice(1).toLowerCase()}
+                    </span>
+                  </td>
+                  <td className="py-3 px-4">
+                    <div className="flex items-center gap-2">
+                      <button
+                        className="p-1.5 rounded-md hover:bg-[#B48C8E11]"
+                        onClick={() => handleAddToPlaylist(p.id)}
+                      >
+                        <Bookmark className="w-4 h-4" />
+                      </button>
+                      {authUser?.role === "ADMIN" && (
+                        <button
+                          onClick={() => handleDelete(p.id)}
+                          className="p-1.5 rounded-md hover:bg-red-100"
+                        >
+                          <TrashIcon className="w-4 h-4 text-red-500" />
                         </button>
-
-                        {authUser?.role === "ADMIN" && (
-                          <button
-                            onClick={() => handleDelete(problem.id)}
-                            className="p-1.5 rounded-md hover:bg-white/10 transition-colors"
-                            title="Delete Problem"
-                          >
-                            <TrashIcon className="w-4 h-4 text-gray-400 hover:text-red-500" />
-                          </button>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })
-            ) : (
-              <tr>
-                <td colSpan={5} className="text-center py-12 text-gray-400">
-                  No problems found matching your criteria.
-                </td>
-              </tr>
-            )}
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
 
-      {/* Pagination */}
-      <div className="flex justify-between items-center mt-4 text-sm text-gray-400">
+      <div className="flex justify-between items-center mt-4 text-sm">
         <div>
-          Showing{" "}
-          {Math.min(
-            (currentPage - 1) * itemsPerPage + 1,
-            filteredProblems.length
-          )}
-          - {Math.min(currentPage * itemsPerPage, filteredProblems.length)} of{" "}
-          {filteredProblems.length} problems
+          Showing {Math.min((currentPage - 1) * itemsPerPage + 1, filteredProblems.length)}-
+          {Math.min(currentPage * itemsPerPage, filteredProblems.length)} of {filteredProblems.length} problems
         </div>
-
         <div className="flex gap-1">
           <button
-            className={`p-2 rounded ${currentPage === 1 ? "text-gray-600" : "hover:bg-white/10"}`}
+            className="px-3 py-1 rounded hover:bg-[#B48C8E11]"
             disabled={currentPage === 1}
-            onClick={() => setCurrentPage((prev) => prev - 1)}
+            onClick={() => setCurrentPage((p) => p - 1)}
           >
             Previous
           </button>
-
           {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-            // Show pages around current page
-            let pageNum;
-            if (totalPages <= 5) {
-              pageNum = i + 1;
-            } else if (currentPage <= 3) {
-              pageNum = i + 1;
-            } else if (currentPage >= totalPages - 2) {
-              pageNum = totalPages - 4 + i;
-            } else {
-              pageNum = currentPage - 2 + i;
-            }
-
+            let pageNum = totalPages <= 5 ? i + 1 : currentPage <= 3 ? i + 1 : currentPage >= totalPages - 2 ? totalPages - 4 + i : currentPage - 2 + i;
             return (
               <button
                 key={pageNum}
-                className={`w-8 h-8 flex items-center justify-center rounded ${
-                  currentPage === pageNum
-                    ? "bg-white text-black font-medium"
-                    : "hover:bg-white/10"
+                className={`w-8 h-8 rounded ${
+                  currentPage === pageNum ? "bg-[#B48C8E] text-white" : "hover:bg-[#B48C8E11]"
                 }`}
                 onClick={() => setCurrentPage(pageNum)}
               >
@@ -369,29 +191,18 @@ const ProblemsTable = ({ problems }) => {
               </button>
             );
           })}
-
           <button
-            className={`p-2 rounded ${currentPage === totalPages ? "text-gray-600" : "hover:bg-white/10"}`}
+            className="px-3 py-1 rounded hover:bg-[#B48C8E11]"
             disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((prev) => prev + 1)}
+            onClick={() => setCurrentPage((p) => p + 1)}
           >
             Next
           </button>
         </div>
       </div>
 
-      {/* Modals */}
-      <CreatePlaylistModal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-        onSubmit={handleCreatePlaylist}
-      />
-
-      <AddToPlaylistModal
-        isOpen={isAddToPlaylistModalOpen}
-        onClose={() => setIsAddToPlaylistModalOpen(false)}
-        problemId={selectedProblemId}
-      />
+      <CreatePlaylistModal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} onSubmit={handleCreatePlaylist} />
+      <AddToPlaylistModal isOpen={isAddToPlaylistModalOpen} onClose={() => setIsAddToPlaylistModalOpen(false)} problemId={selectedProblemId} />
     </div>
   );
 };

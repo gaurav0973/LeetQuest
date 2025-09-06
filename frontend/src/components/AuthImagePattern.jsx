@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 const CodeBackground = ({ title, subtitle }) => {
   const [activeIndex, setActiveIndex] = useState(0)
 
-  // Code snippets to display in the background
   const codeSnippets = [
     `function twoSum(nums, target) {
   const map = new Map();
@@ -56,7 +55,6 @@ function reverseList(head) {
 }`,
   ]
 
-  // Rotate through code snippets every 2 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % codeSnippets.length)
@@ -65,63 +63,70 @@ function reverseList(head) {
   }, [codeSnippets.length])
 
   return (
-    <div className="hidden lg:flex flex-col items-center justify-center bg-slate-900 text-white p-12 relative overflow-hidden">
-      {/* Animated code symbols in background */}
+    <div
+      className="hidden lg:flex flex-col items-center justify-center p-12 relative overflow-hidden"
+      style={{ backgroundColor: '#F0FDFD', color: '#B48C8E' }}
+    >
+      {/* Background floating icons */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-[10%] left-[15%] animate-pulse">
-          <Braces size={40} />
+          <Braces size={40} color="#B48C8E" />
         </div>
         <div className="absolute top-[30%] left-[80%] animate-pulse delay-300">
-          <FileCode size={50} />
+          <FileCode size={50} color="#B48C8E" />
         </div>
         <div className="absolute top-[70%] left-[20%] animate-pulse delay-700">
-          <Terminal size={45} />
+          <Terminal size={45} color="#B48C8E" />
         </div>
         <div className="absolute top-[60%] left-[75%] animate-pulse delay-500">
-          <Code size={55} />
+          <Code size={55} color="#B48C8E" />
         </div>
         <div className="absolute top-[85%] left-[45%] animate-pulse delay-200">
-          <Braces size={35} />
+          <Braces size={35} color="#B48C8E" />
         </div>
         <div className="absolute top-[15%] left-[60%] animate-pulse delay-100">
-          <Terminal size={30} />
+          <Terminal size={30} color="#B48C8E" />
         </div>
       </div>
 
       <div className="z-10 max-w-md flex flex-col items-center">
         {/* Code editor mockup */}
-        <div className="w-full bg-slate-800 rounded-lg shadow-xl mb-8 overflow-hidden">
+        <div
+          className="w-full rounded-lg shadow-xl mb-8 overflow-hidden"
+          style={{ backgroundColor: '#ffffff', border: '1px solid #B48C8E' }}
+        >
           {/* Editor header */}
-          <div className="bg-slate-700 px-4 py-2 flex items-center">
+          <div
+            className="px-4 py-2 flex items-center"
+            style={{ backgroundColor: '#F0FDFD', borderBottom: '1px solid #B48C8E' }}
+          >
             <div className="flex space-x-2 mr-4">
               <div className="w-3 h-3 rounded-full bg-red-500"></div>
               <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
               <div className="w-3 h-3 rounded-full bg-green-500"></div>
             </div>
-            <div className="text-xs font-mono opacity-70">problem.js</div>
+            <div className="text-xs font-mono opacity-70 text-[#B48C8E]">problem.js</div>
           </div>
 
           {/* Code content */}
-          <div className="p-4 font-mono text-xs sm:text-sm overflow-hidden relative h-64">
-            <pre className="whitespace-pre-wrap text-green-400 transition-opacity duration-1000">
+          <div className="p-4 font-mono text-sm overflow-hidden relative h-64 text-[#264d4d]">
+            <pre className="whitespace-pre-wrap transition-opacity duration-1000">
               {codeSnippets[activeIndex]}
             </pre>
-
-            {/* Blinking cursor */}
-            <div className="absolute bottom-4 right-4 w-2 h-4 bg-white animate-blink"></div>
+            <div className="absolute bottom-4 right-4 w-2 h-4 bg-[#B48C8E] animate-blink"></div>
           </div>
         </div>
 
         {/* Logo */}
         <div className="flex items-center justify-center mb-6">
-          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-            <Code className="w-6 h-6 text-primary" />
+          <div className="w-12 h-12 rounded-xl" style={{ backgroundColor: '#B48C8E22' }}>
+            <Code className="w-6 h-6 m-auto" color="#B48C8E" />
           </div>
         </div>
 
         {/* Text content */}
-        <h2 className="text-2xl font-bold mb-4 text-center">{title}</h2>
-        <p className="text-slate-300 text-center">{subtitle}</p>
+        <h2 className="text-2xl font-bold mb-4 text-center text-[#B48C8E]">{title}</h2>
+        <p className="text-center" style={{ color: '#5e5e5e' }}>{subtitle}</p>
       </div>
     </div>
   )

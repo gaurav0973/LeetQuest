@@ -24,10 +24,22 @@ const AddToPlaylistModal = ({ isOpen, onClose, problemId }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-base-100 rounded-lg shadow-xl w-full max-w-md">
-        <div className="flex justify-between items-center p-4 border-b border-base-300">
-          <h3 className="text-xl font-bold">Add to Playlist</h3>
-          <button onClick={onClose} className="btn btn-ghost btn-sm btn-circle">
+      <div
+        className="rounded-lg shadow-xl w-full max-w-md border"
+        style={{ backgroundColor: '#F0FDFD', borderColor: '#B48C8E' }}
+      >
+        <div
+          className="flex justify-between items-center p-4 border-b"
+          style={{ borderColor: '#B48C8E' }}
+        >
+          <h3 className="text-xl font-bold" style={{ color: '#B48C8E' }}>
+            Add to Playlist
+          </h3>
+          <button
+            onClick={onClose}
+            className="btn btn-ghost btn-sm btn-circle hover:bg-opacity-20"
+            style={{ color: '#B48C8E' }}
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -35,13 +47,20 @@ const AddToPlaylistModal = ({ isOpen, onClose, problemId }) => {
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-medium">Select Playlist</span>
+              <span className="label-text font-medium" style={{ color: '#B48C8E' }}>
+                Select Playlist
+              </span>
             </label>
             <select
               className="select select-bordered w-full"
               value={selectedPlaylist}
               onChange={(e) => setSelectedPlaylist(e.target.value)}
               disabled={isLoading}
+              style={{
+                borderColor: '#B48C8E',
+                color: '#B48C8E',
+                backgroundColor: '#ffffff',
+              }}
             >
               <option value="">Select a playlist</option>
               {playlists.map((playlist) => (
@@ -52,14 +71,26 @@ const AddToPlaylistModal = ({ isOpen, onClose, problemId }) => {
             </select>
           </div>
 
-          <div className="flex justify-end gap-2 mt-6 ">
-            <button type="button" onClick={onClose} className="btn btn-ghost">
-              Cancell
+          <div className="flex justify-end gap-2 mt-6">
+            <button
+              type="button"
+              onClick={onClose}
+              className="btn"
+              style={{
+                border: '1px solid #B48C8E',
+                color: '#B48C8E',
+                backgroundColor: 'transparent',
+              }}
+            >
+              Cancel
             </button>
-            <button 
-              type="submit" 
-              className="btn btn-primary"
+            <button
+              type="submit"
+              className="btn text-white"
               disabled={!selectedPlaylist || isLoading}
+              style={{
+                backgroundColor: '#B48C8E',
+              }}
             >
               {isLoading ? <Loader className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
               Add to Playlist

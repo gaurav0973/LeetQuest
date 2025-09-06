@@ -9,7 +9,6 @@ import {
   Share2,
   Clock,
   ChevronRight,
-  BookOpen,
   Terminal,
   Code2,
   Users,
@@ -69,8 +68,6 @@ const ProblemPage = () => {
     }
   }, [activeTab, id]);
 
-  console.log("submission", submissions);
-
   const handleLanguageChange = (e) => {
     const lang = e.target.value;
     setSelectedLanguage(lang);
@@ -104,62 +101,61 @@ const ProblemPage = () => {
     switch (activeTab) {
       case "description":
         return (
-          <div className="prose max-w-none">
+          <div className="prose max-w-none whitespace-pre-wrap">
             <p className="text-lg mb-6">{problem.description}</p>
 
             {problem.examples && (
               <>
                 <h3 className="text-xl font-bold mb-4">Examples:</h3>
-                {Object.entries(problem.examples).map(
-                  ([lang, example], idx) => (
-                    <div
-                      key={lang}
-                      className="bg-base-200 p-6 rounded-xl mb-6 font-mono"
-                    >
-                      <div className="mb-4">
-                        <div className="text-indigo-300 mb-2 text-base font-semibold">
-                          Input:
-                        </div>
-                        <span className="bg-black/90 px-4 py-1 rounded-lg font-semibold text-white">
-                          {example.input}
-                        </span>
+                {Object.entries(problem.examples).map(([lang, example]) => (
+                  <div
+                    key={lang}
+                    className="bg-base-200 p-6 rounded-xl mb-6 font-mono whitespace-pre-wrap"
+                  >
+                    <div className="mb-4">
+                      <div className="text-indigo-300 mb-2 text-base font-semibold">
+                        Input:
                       </div>
-                      <div className="mb-4">
-                        <div className="text-indigo-300 mb-2 text-base font-semibold">
-                          Output:
-                        </div>
-                        <span className="bg-black/90 px-4 py-1 rounded-lg font-semibold text-white">
-                          {example.output}
-                        </span>
-                      </div>
-                      {example.explanation && (
-                        <div>
-                          <div className="text-emerald-300 mb-2 text-base font-semibold">
-                            Explanation:
-                          </div>
-                          <p className="text-base-content/70 text-lg font-sem">
-                            {example.explanation}
-                          </p>
-                        </div>
-                      )}
+                      <pre className="bg-black/90 px-4 py-2 rounded-lg text-white overflow-x-auto">
+                        {example.input}
+                      </pre>
                     </div>
-                  )
-                )}
+                    <div className="mb-4">
+                      <div className="text-indigo-300 mb-2 text-base font-semibold">
+                        Output:
+                      </div>
+                      <pre className="bg-black/90 px-4 py-2 rounded-lg text-white overflow-x-auto">
+                        {example.output}
+                      </pre>
+                    </div>
+                    {example.explanation && (
+                      <div>
+                        <div className="text-emerald-300 mb-2 text-base font-semibold">
+                          Explanation:
+                        </div>
+                        <pre className="text-base-content/70 text-md whitespace-pre-wrap">
+                          {example.explanation}
+                        </pre>
+                      </div>
+                    )}
+                  </div>
+                ))}
               </>
             )}
 
             {problem.constraints && (
               <>
                 <h3 className="text-xl font-bold mb-4">Constraints:</h3>
-                <div className="bg-base-200 p-6 rounded-xl mb-6">
-                  <span className="bg-black/90 px-4 py-1 rounded-lg font-semibold text-white text-lg">
+                <div className="bg-base-200 p-6 rounded-xl whitespace-pre-wrap">
+                  <pre className="bg-black/90 px-4 py-2 rounded-lg text-white text-lg overflow-x-auto">
                     {problem.constraints}
-                  </span>
+                  </pre>
                 </div>
               </>
             )}
           </div>
         );
+
       case "submissions":
         return (
           <SubmissionsList
@@ -167,20 +163,22 @@ const ProblemPage = () => {
             isLoading={isSubmissionsLoading}
           />
         );
+
       case "discussion":
         return (
           <div className="p-4 text-center text-base-content/70">
             No discussions yet
           </div>
         );
+
       case "hints":
         return (
           <div className="p-4">
             {problem?.hints ? (
-              <div className="bg-base-200 p-6 rounded-xl">
-                <span className="bg-black/90 px-4 py-1 rounded-lg font-semibold text-white text-lg">
+              <div className="bg-base-200 p-6 rounded-xl whitespace-pre-wrap">
+                <pre className="bg-black/90 px-4 py-2 rounded-lg text-white text-lg overflow-x-auto">
                   {problem.hints}
-                </span>
+                </pre>
               </div>
             ) : (
               <div className="text-center text-base-content/70">
@@ -189,6 +187,7 @@ const ProblemPage = () => {
             )}
           </div>
         );
+
       default:
         return null;
     }
@@ -208,7 +207,7 @@ const ProblemPage = () => {
               <Clock className="w-4 h-4" />
               <span>
                 Updated{" "}
-                {new Date(problem.createdAt).toLocaleString("en-US", {
+                {new Date(problem.createdAt).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
@@ -254,42 +253,27 @@ const ProblemPage = () => {
           <div className="card bg-base-100 shadow-xl">
             <div className="card-body p-0">
               <div className="tabs tabs-bordered">
-                <button
-                  className={`tab gap-2 ${
-                    activeTab === "description" ? "tab-active" : ""
-                  }`}
-                  onClick={() => setActiveTab("description")}
-                >
-                  <FileText className="w-4 h-4" />
-                  Description
-                </button>
-                <button
-                  className={`tab gap-2 ${
-                    activeTab === "submissions" ? "tab-active" : ""
-                  }`}
-                  onClick={() => setActiveTab("submissions")}
-                >
-                  <Code2 className="w-4 h-4" />
-                  Submissions
-                </button>
-                <button
-                  className={`tab gap-2 ${
-                    activeTab === "discussion" ? "tab-active" : ""
-                  }`}
-                  onClick={() => setActiveTab("discussion")}
-                >
-                  <MessageSquare className="w-4 h-4" />
-                  Discussion
-                </button>
-                <button
-                  className={`tab gap-2 ${
-                    activeTab === "hints" ? "tab-active" : ""
-                  }`}
-                  onClick={() => setActiveTab("hints")}
-                >
-                  <Lightbulb className="w-4 h-4" />
-                  Hints
-                </button>
+                {["description", "submissions", "discussion", "hints"].map(
+                  (tab) => (
+                    <button
+                      key={tab}
+                      className={`tab gap-2 ${
+                        activeTab === tab ? "tab-active" : ""
+                      }`}
+                      onClick={() => setActiveTab(tab)}
+                    >
+                      {
+                        {
+                          description: <FileText className="w-4 h-4" />,
+                          submissions: <Code2 className="w-4 h-4" />,
+                          discussion: <MessageSquare className="w-4 h-4" />,
+                          hints: <Lightbulb className="w-4 h-4" />,
+                        }[tab]
+                      }
+                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                    </button>
+                  )
+                )}
               </div>
 
               <div className="p-6">{renderTabContent()}</div>
@@ -316,9 +300,6 @@ const ProblemPage = () => {
                     minimap: { enabled: false },
                     fontSize: 20,
                     lineNumbers: "on",
-                    roundedSelection: false,
-                    scrollBeyondLastLine: false,
-                    readOnly: false,
                     automaticLayout: true,
                   }}
                 />
@@ -351,9 +332,7 @@ const ProblemPage = () => {
               <Submission submission={submission} />
             ) : (
               <>
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold">Test Cases</h3>
-                </div>
+                <h3 className="text-xl font-bold mb-4">Test Cases</h3>
                 <div className="overflow-x-auto">
                   <table className="table table-zebra w-full">
                     <thead>
@@ -365,8 +344,12 @@ const ProblemPage = () => {
                     <tbody>
                       {testcases.map((testCase, index) => (
                         <tr key={index}>
-                          <td className="font-mono">{testCase.input}</td>
-                          <td className="font-mono">{testCase.output}</td>
+                          <td className="font-mono whitespace-pre-wrap">
+                            {testCase.input}
+                          </td>
+                          <td className="font-mono whitespace-pre-wrap">
+                            {testCase.output}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
